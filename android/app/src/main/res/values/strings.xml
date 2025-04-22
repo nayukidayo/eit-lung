@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">eit-lung</string>
+    <string name="title_activity_main">eit-lung</string>
+    <string name="package_name">com.eit.lung</string>
+    <string name="custom_url_scheme">com.eit.lung</string>
+</resources>

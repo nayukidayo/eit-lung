@@ -1,0 +1,13 @@
+.a {
+  grid-area: 2 / 2 / -1 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid var(--mantine-color-default-border);
+  padding: 1rem 0;
+  gap: 1rem;
+}
+
+.a > button {
+  width: 120px;
+}

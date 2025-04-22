@@ -1,0 +1,31 @@
+.a {}
+
+.b {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  border-bottom: 1px solid var(--mantine-color-default-border);
+  padding: 1rem 0;
+
+  &>button {
+    width: 120px;
+  }
+}
+
+.c {
+  /* width: 256px;
+  height: 256px; */
+  /* box-shadow: 0 0 1px #000; */
+  margin: 1rem;
+
+  &>canvas {
+    image-rendering: pixelated;
+    /* transform-origin: top left;
+    transform: scale(4); */
+    width: 256px;
+    height: 256px;
+    border: 1px solid #000;
+    /* width: 640px;
+    height: 640px; */
+  }
+}
