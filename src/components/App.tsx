@@ -1,22 +1,25 @@
-import { MantineProvider } from '@mantine/core'
+import { setupIonicReact, IonApp } from '@ionic/react'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import Layout from './Layout'
-import Setting from './Setting'
 import Main from './Main'
+import Setting from './Setting'
 
-function App() {
+setupIonicReact()
+
+export default function App() {
   return (
-    <MantineProvider>
+    <IonApp>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Main />} />
-            <Route path="setting" element={<Setting />} />
+            <Route path="zb" element={<Setting />} />
+            <Route path="gn" element={<Setting />} />
+            <Route path="jz" element={<Setting />} />
+            <Route path="xt" element={<Setting />} />
           </Route>
         </Routes>
       </BrowserRouter>
-    </MantineProvider>
+    </IonApp>
   )
 }
-
-export default App
