@@ -1,26 +1,16 @@
-import { useState } from 'react'
 import { IonItem, IonList, IonSelect, IonSelectOption } from '@ionic/react'
-import cs from './Setting.module.css'
+import useStore from '../hooks/useStore'
 
-type SettingProps = {}
-
-const Setting: React.FC<SettingProps> = ({}) => {
-  const [value, setValue] = useState({
-    jl: '5',
-    cl: '1',
-    hq: '1',
-    hz: '4',
-    sj: '2',
-    kd: '3',
-  })
+export default function Setting() {
+  const { store, setStore } = useStore()
 
   return (
     <IonList inset>
       <IonItem>
         <IonSelect
           label="激励频率"
-          value={value.jl}
-          onIonChange={e => setValue({ ...value, jl: e.detail.value })}
+          value={store.jl}
+          onIonChange={e => setStore({ jl: e.detail.value })}
         >
           <IonSelectOption value="1">10K</IonSelectOption>
           <IonSelectOption value="2">20K</IonSelectOption>
@@ -37,8 +27,8 @@ const Setting: React.FC<SettingProps> = ({}) => {
       <IonItem>
         <IonSelect
           label="测量模式"
-          value={value.cl}
-          onIonChange={e => setValue({ ...value, cl: e.detail.value })}
+          value={store.cl}
+          onIonChange={e => setStore({ cl: e.detail.value })}
         >
           <IonSelectOption value="1">Obj-Amp</IonSelectOption>
           <IonSelectOption value="2">Obj-Phase</IonSelectOption>
@@ -49,8 +39,8 @@ const Setting: React.FC<SettingProps> = ({}) => {
       <IonItem>
         <IonSelect
           label="呼气末测量电压"
-          value={value.hq}
-          onIonChange={e => setValue({ ...value, hq: e.detail.value })}
+          value={store.hq}
+          onIonChange={e => setStore({ hq: e.detail.value })}
         >
           <IonSelectOption value="1">呼气末标定</IonSelectOption>
         </IonSelect>
@@ -58,8 +48,8 @@ const Setting: React.FC<SettingProps> = ({}) => {
       <IonItem>
         <IonSelect
           label="患者类型"
-          value={value.hz}
-          onIonChange={e => setValue({ ...value, hz: e.detail.value })}
+          value={store.hz}
+          onIonChange={e => setStore({ hz: e.detail.value })}
         >
           <IonSelectOption value="1">婴幼儿</IonSelectOption>
           <IonSelectOption value="2">女性中瘦</IonSelectOption>
@@ -71,8 +61,8 @@ const Setting: React.FC<SettingProps> = ({}) => {
       <IonItem>
         <IonSelect
           label="时间轴"
-          value={value.sj}
-          onIonChange={e => setValue({ ...value, sj: e.detail.value })}
+          value={store.sj}
+          onIonChange={e => setStore({ sj: e.detail.value })}
         >
           <IonSelectOption value="1">1min</IonSelectOption>
           <IonSelectOption value="2">2min</IonSelectOption>
@@ -83,8 +73,8 @@ const Setting: React.FC<SettingProps> = ({}) => {
       <IonItem>
         <IonSelect
           label="时间刻度"
-          value={value.kd}
-          onIonChange={e => setValue({ ...value, kd: e.detail.value })}
+          value={store.kd}
+          onIonChange={e => setStore({ kd: e.detail.value })}
         >
           <IonSelectOption value="1">1s</IonSelectOption>
           <IonSelectOption value="2">5s</IonSelectOption>
@@ -96,5 +86,3 @@ const Setting: React.FC<SettingProps> = ({}) => {
     </IonList>
   )
 }
-
-export default Setting

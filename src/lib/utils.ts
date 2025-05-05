@@ -3,6 +3,7 @@ export function map(value: number, inMin: number, inMax: number, outMin: number,
 }
 
 export function numberToColor(value: number) {
+  console.log('', value)
   return [0, 0, 255, 255]
 }
 
