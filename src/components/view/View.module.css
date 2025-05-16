@@ -1,0 +1,6 @@
+.a {
+  display: grid;
+  grid: min-content minmax(0, 1fr) / 1fr;
+  padding: 0.5rem 1rem 1rem;
+  gap: 1rem;
+}

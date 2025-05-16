@@ -1,0 +1,45 @@
+import { useState } from 'react'
+import { Outlet, useNavigate } from 'react-router'
+import { IonSegment, IonSegmentButton, IonLabel } from '@ionic/react'
+import type { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core/components'
+import cs from './View.module.css'
+
+export default function View() {
+  const [seg, setSeg] = useState(location.pathname)
+  const navigate = useNavigate()
+
+  const handleChange = (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
+    const value = (e.detail.value ?? seg) as string
+    setSeg(value)
+    navigate(value)
+  }
+
+  return (
+    <main className={cs.a}>
+      <IonSegment value={seg} onIonChange={handleChange}>
+        <IonSegmentButton value="/view">
+          <IonLabel>主要视图</IonLabel>
+        </IonSegmentButton>
+        <IonSegmentButton value="/view/dong">
+          <IonLabel>动态图像</IonLabel>
+        </IonSegmentButton>
+        <IonSegmentButton value="/view/tv">
+          <IonLabel>TV图像</IonLabel>
+        </IonSegmentButton>
+        <IonSegmentButton value="/view/dian">
+          <IonLabel>电导率变化</IonLabel>
+        </IonSegmentButton>
+        <IonSegmentButton value="/view/hu">
+          <IonLabel>呼气末变化</IonLabel>
+        </IonSegmentButton>
+        <IonSegmentButton value="/view/tong">
+          <IonLabel>通气变化</IonLabel>
+        </IonSegmentButton>
+        <IonSegmentButton value="/view/san" disabled>
+          <IonLabel>三维图像</IonLabel>
+        </IonSegmentButton>
+      </IonSegment>
+      <Outlet />
+    </main>
+  )
+}

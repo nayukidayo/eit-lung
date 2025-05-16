@@ -2,8 +2,7 @@ export function map(value: number, inMin: number, inMax: number, outMin: number,
   return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin
 }
 
-export function numberToColor(value: number) {
-  console.log('', value)
+export function numberToColor(_: number) {
   return [0, 0, 255, 255]
 }
 

@@ -8,9 +8,7 @@ export default function Layout() {
     <div className={cs.a}>
       <Header />
       <Navbar />
-      <div className={cs.m}>
-        <Outlet />
-      </div>
+      <Outlet />
     </div>
   )
 }

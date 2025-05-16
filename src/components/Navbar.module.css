@@ -1,9 +1,7 @@
 .a {
-  grid-area: 2 / 1 / -1 / 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-right: 1px solid #ced4da;
   padding: 1rem 0;
   gap: 1rem;
 

@@ -1,39 +1,31 @@
 import { createContext, useContext } from 'react'
 
-export type Store = {
+export const initialStore = {
   // 系统设置
-  jl: string
-  cl: string
-  hq: string
-  hz: string
-  sj: string
-  kd: string
-  // header
-  lb: string
-  hz_name: string
-  hz_sex: string
-  hz_age: string
-}
-
-export const initialStore: Store = {
   jl: '5',
   cl: '1',
   hq: '1',
   hz: '4',
   sj: '2',
   kd: '3',
-  lb: '2',
+  lb: '1',
+  ro: '1',
+  // 患者设置
   hz_name: '张三',
-  hz_sex: '男',
+  hz_sex: '1',
   hz_age: '30',
 }
 
-export type StoreValue<T> = {
-  store: T
-  setStore: (store: Partial<T>) => void
+export type Store = {
+  [T in keyof typeof initialStore]: string
 }
 
-export const StoreContext = createContext<StoreValue<Store>>({} as StoreValue<Store>)
+export type StoreValue = {
+  store: Store
+  setStore: (store: Partial<Store>) => void
+}
+
+export const StoreContext = createContext<StoreValue>({} as StoreValue)
 
 export default function useStore() {
   return useContext(StoreContext)
