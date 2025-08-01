@@ -1,46 +1,90 @@
-import { useEffect, useRef, useState } from 'react'
-import useStore from '../hooks/useStore'
+import { useEffect, useLayoutEffect, useRef } from 'react'
+import uPlot from 'uplot'
 // import cs from './Page.module.css'
 
 export default function Page() {
-  const ref = useRef<HTMLCanvasElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
+  const u = useRef<uPlot>(null)
+  const x = useRef<number[]>(Array.from({ length: 20 }, (_, i) => i))
 
   useEffect(() => {
-    if (ref.current === null) return
-    const ctx = ref.current.getContext('2d')!
+    if (!ref.current) return
 
-    ctx.scale(5, 5)
+    const opts: uPlot.Options = {
+      width: ref.current.clientWidth,
+      height: ref.current.clientHeight,
+      series: [
+        {},
+        {
+          width: 0,
+          fill: '#4285F4',
+          points: { show: false },
+          paths: uPlot.paths.bars!({ align: 1 }),
+        },
+      ],
+      axes: [
+        { show: false },
+        {
+          scale: 'y',
+          size: 60,
+        },
+      ],
+      cursor: { show: false },
+      legend: { show: false },
+      scales: {
+        x: {
+          time: false,
+          auto: false,
+          range: [0, 20],
+        },
+        y: {
+          // auto: false,
+          // range: {
+          //   min: { pad: 1 },
+          //   max: { pad: 1 },
+          // },
+        },
+      },
+    }
 
-    const line = ctx.createLinearGradient(0, 0, 0, 64)
-    line.addColorStop(0, '#00ABEB')
-    line.addColorStop(0.5, '#FFFFFF')
-    line.addColorStop(1, '#26C000')
-    ctx.fillStyle = line
-    ctx.fillRect(68, 0, 2, 64)
-    ctx.fillStyle = '#00ABEB'
-    ctx.fillRect(0, 0, 64, 64)
-
-    ctx.fillStyle = '#ff0000'
-    ctx.lineWidth = 1 / 5
-    ctx.beginPath()
-    ctx.moveTo(0, 32)
-    ctx.lineTo(64, 32)
-    ctx.stroke()
+    u.current = new uPlot(
+      opts,
+      [
+        x.current, // X轴数据
+        Array.from({ length: 20 }, (_, i) => i + 1), // Y轴数据
+      ],
+      ref.current
+    )
 
     return () => {
-      ctx.reset()
+      u.current?.destroy()
+    }
+  }, [])
+
+  useLayoutEffect(() => {
+    const onResize = () => {
+      if (!u.current || !ref.current) return
+      u.current.setSize({
+        width: ref.current.clientWidth,
+        height: ref.current.clientHeight,
+      })
+    }
+    window.addEventListener('resize', onResize)
+    return () => {
+      window.removeEventListener('resize', onResize)
     }
   }, [])
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <canvas
-        style={{ width: '350px', height: '320px', border: '1px solid #000' }}
-        // style={{ border: '1px solid #000' }}
-        ref={ref}
-        width={350}
-        height={320}
-      ></canvas>
-    </div>
+    <main
+      style={{
+        display: 'grid',
+        grid: 'repeat(2, minmax(0, 1fr)) / 1fr',
+        padding: ' 1rem 2rem 1rem 0',
+        gap: '1rem',
+      }}
+    >
+      <div ref={ref} style={{ width: '100%', height: '100%', minWidth: '0px' }}></div>
+    </main>
   )
 }

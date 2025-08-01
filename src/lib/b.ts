@@ -51,7 +51,7 @@ function greit(uell: number[], uref: number[], cirs: number[]) {
 
 function createImage(uell: number[]) {
   if (uell.length !== 208 || msg.uref.length !== 208 || msg.cirs.length !== 484224) return
-  const b = greit(uell, msg.uref, msg.cirs)
+  greit(uell, msg.uref, msg.cirs)
   const a = new Uint8ClampedArray(64 * 64 * 4)
   for (let i = 0; i < a.length; i += 4) {
     a[i] = 0
