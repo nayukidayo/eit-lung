@@ -1,9 +1,15 @@
 import { createContext, useContext } from 'react'
+import cirs from '../lib/cirs'
+import uref from '../lib/uref'
 
 export const initialStore = {
+  cirs,
+  uref,
+  uell: [] as number[],
+  start: false,
   // 系统设置
-  jl: '5',
-  cl: '1',
+  jl: '4',
+  cl: '26,30',
   hq: '1',
   hz: '4',
   sj: '2',
@@ -16,9 +22,7 @@ export const initialStore = {
   hz_age: '30',
 }
 
-export type Store = {
-  [T in keyof typeof initialStore]: string
-}
+export type Store = typeof initialStore
 
 export type StoreValue = {
   store: Store

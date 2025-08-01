@@ -13,16 +13,16 @@ export default function Setting() {
             value={store.jl}
             onIonChange={e => setStore({ jl: e.detail.value })}
           >
-            <IonSelectOption value="1">10K</IonSelectOption>
-            <IonSelectOption value="2">20K</IonSelectOption>
-            <IonSelectOption value="3">30K</IonSelectOption>
-            <IonSelectOption value="4">40K</IonSelectOption>
-            <IonSelectOption value="5">50K</IonSelectOption>
-            <IonSelectOption value="6">60K</IonSelectOption>
-            <IonSelectOption value="7">70K</IonSelectOption>
-            <IonSelectOption value="8">80K</IonSelectOption>
-            <IonSelectOption value="9">90K</IonSelectOption>
-            <IonSelectOption value="10">100K</IonSelectOption>
+            <IonSelectOption value="4">10K</IonSelectOption>
+            <IonSelectOption value="8">20K</IonSelectOption>
+            <IonSelectOption value="10">30K</IonSelectOption>
+            <IonSelectOption value="12">40K</IonSelectOption>
+            <IonSelectOption value="14">50K</IonSelectOption>
+            <IonSelectOption value="16">60K</IonSelectOption>
+            <IonSelectOption value="18">70K</IonSelectOption>
+            <IonSelectOption value="20">80K</IonSelectOption>
+            <IonSelectOption value="22">90K</IonSelectOption>
+            <IonSelectOption value="24">100K</IonSelectOption>
           </IonSelect>
         </IonItem>
         <IonItem>
@@ -31,10 +31,10 @@ export default function Setting() {
             value={store.cl}
             onIonChange={e => setStore({ cl: e.detail.value })}
           >
-            <IonSelectOption value="1">Obj-Amp</IonSelectOption>
-            <IonSelectOption value="2">Obj-Phase</IonSelectOption>
-            <IonSelectOption value="3">Ref-Amp</IonSelectOption>
-            <IonSelectOption value="4">Ref-Phase</IonSelectOption>
+            <IonSelectOption value="26,30">Obj-Amp</IonSelectOption>
+            <IonSelectOption value="28,30">Obj-Phase</IonSelectOption>
+            <IonSelectOption value="26,32">Ref-Amp</IonSelectOption>
+            <IonSelectOption value="28,32">Ref-Phase</IonSelectOption>
           </IonSelect>
         </IonItem>
         <IonItem>

@@ -4,9 +4,5 @@
 }
 
 .c {
-  /* transform: scale(5); */
-  width: 420px;
-  height: 320px;
   place-self: center;
-  border: 1px solid #ced4da;
 }

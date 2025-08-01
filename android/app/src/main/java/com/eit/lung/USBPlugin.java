@@ -2,15 +2,14 @@ package com.eit.lung;
 
 import android.util.Log;
 
+import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
-import java.util.Arrays;
-
-@CapacitorPlugin(name = "USB")
+@CapacitorPlugin(name = "usb")
 public class USBPlugin extends Plugin {
     private USB usb;
     private static final String TAG = "QQQ";
@@ -21,24 +20,11 @@ public class USBPlugin extends Plugin {
     }
 
     @PluginMethod()
-    public void open(PluginCall call) {
-        Long value = call.getLong("productId");
-        JSObject ret = new JSObject();
-        if (value == null) {
-            ret.put("value", "nulllllll");
-        } else {
-            ret.put("value", value.toString());
-        }
-        notifyListeners("open", ret);
-        call.resolve(ret);
-    }
-
-    @PluginMethod()
     public void start(PluginCall call) {
-        Integer mode0 = call.getInt("mode0");
         Integer mode1 = call.getInt("mode1");
+        Integer mode2 = call.getInt("mode2");
         Integer freq = call.getInt("freq");
-        if (mode0 == null || mode1 == null || freq == null) {
+        if (mode1 == null || mode2 == null || freq == null) {
             call.reject("invalid parameters");
             return;
         }
@@ -46,7 +32,7 @@ public class USBPlugin extends Plugin {
             @Override
             public void ok(short[] shorts) {
                 JSObject ret = new JSObject();
-                ret.put("data", Arrays.toString(shorts));
+                ret.put("data", JSArray.from(shorts));
                 notifyListeners("data", ret);
             }
 
@@ -60,7 +46,7 @@ public class USBPlugin extends Plugin {
         OpenCallback openCallback = new OpenCallback() {
             @Override
             public void ok() {
-                usb.start(mode0, mode1, freq, dataCallback);
+                usb.start(mode1, mode2, freq, dataCallback);
                 call.resolve();
             }
 

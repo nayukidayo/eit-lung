@@ -1,20 +1,15 @@
-import { useEffect, useState } from 'react'
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import { useMemo } from 'react'
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, YAxis } from 'recharts'
+import useStore from '../hooks/useStore'
 import cs from './Calib.module.css'
 
-type ValType = {
-  value: number
-}
-
 export default function Calibration() {
-  const [val, setVal] = useState<ValType[]>([])
+  const { store } = useStore()
 
-  useEffect(() => {
-    const arr = Array.from({ length: 208 }).map(() => ({
-      value: Math.floor(Math.random() * 100),
-    }))
-    setVal(arr)
-  }, [])
+  const val = useMemo(() => {
+    if (store.uell.length === 0) return [{ value: 0 }]
+    return store.uell.map(value => ({ value }))
+  }, [store.uell])
 
   return (
     <main className={cs.a}>
@@ -22,7 +17,6 @@ export default function Calibration() {
       <ResponsiveContainer>
         <BarChart data={val}>
           <CartesianGrid strokeDasharray="4" vertical={false} />
-          <XAxis />
           <YAxis />
           <Bar isAnimationActive={false} dataKey="value" fill="#1a65eb" />
         </BarChart>

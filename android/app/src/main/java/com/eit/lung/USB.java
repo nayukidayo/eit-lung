@@ -116,9 +116,10 @@ public class USB {
         manager.requestPermission(device, permissionIntent);
     }
 
-    void start(int mode0, int mode1, int freq, DataCallback callback) {
-        transfer(mode0, 512);
+    void start(int mode1, int mode2, int freq, DataCallback callback) {
         transfer(mode1, 512);
+        transfer(mode2, 512);
+        transfer(freq, 512);
         transferData = new TransferData(freq, callback);
         transferData.start();
     }

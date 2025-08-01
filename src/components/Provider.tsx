@@ -11,8 +11,8 @@ export default function Provider({ children }: ProviderProps) {
   const mergeStore = (obj: Partial<Store>) => setStore(prev => ({ ...prev, ...obj }))
 
   return (
-    <StoreContext.Provider value={{ store: store, setStore: mergeStore }}>
+    <StoreContext value={{ store: store, setStore: mergeStore }}>
       {children}
-    </StoreContext.Provider>
+    </StoreContext>
   )
 }

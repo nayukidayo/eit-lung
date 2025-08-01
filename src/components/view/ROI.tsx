@@ -4,7 +4,7 @@ export default function ROI() {
   return (
     <div className={cs.a}>
       <div>
-        <div>呼吸速率(min)</div>
+        <div>呼吸速率(/min)</div>
         <div>12</div>
       </div>
       <div>

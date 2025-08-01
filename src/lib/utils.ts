@@ -17,3 +17,19 @@ export function numberToColor(_: number) {
 // rgb(245, 231, 84) 1 16115540
 // rgb(86, 191, 167) -1 5685159
 // rgb(63, 62, 194) -3.5 4144834
+
+export function greit(uell: number[], uref: number[], cirs: number[]) {
+  const a = Array.from<number>({ length: 208 })
+  for (let i = 0; i < a.length; i++) {
+    a[i] = uell[i] - uref[i]
+  }
+  const b = Array.from<number>({ length: 2328 })
+  for (let i = 0; i < 2328; i++) {
+    let sum = 0
+    for (let j = 0; j < 208; j++) {
+      sum += cirs[i * 208 + j] * a[j]
+    }
+    b[i] = sum
+  }
+  return b
+}

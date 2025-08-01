@@ -29,10 +29,10 @@ export default function View() {
         <IonSegmentButton value="/view/dian">
           <IonLabel>电导率变化</IonLabel>
         </IonSegmentButton>
-        <IonSegmentButton value="/view/hu">
+        <IonSegmentButton value="/view/hu" disabled>
           <IonLabel>呼气末变化</IonLabel>
         </IonSegmentButton>
-        <IonSegmentButton value="/view/tong">
+        <IonSegmentButton value="/view/tong" disabled>
           <IonLabel>通气变化</IonLabel>
         </IonSegmentButton>
         <IonSegmentButton value="/view/san" disabled>
