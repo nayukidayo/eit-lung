@@ -1,78 +1,39 @@
-import { useEffect, useLayoutEffect, useRef } from 'react'
-import uPlot from 'uplot'
+import { useEffect, useRef, useState } from 'react'
+import Chart, { type Opts } from './Chart'
+import type { AlignedData } from 'uplot'
 // import cs from './Page.module.css'
 
+const opts: Opts = {
+  scales: {
+    x: {
+      time: false,
+      auto: false,
+      range: [0, 500],
+    },
+  },
+  axes: [{ show: false }, { show: false }],
+  series: [
+    {},
+    {
+      stroke: 'rgba(66, 133, 244, 1)',
+      fill: 'rgba(66, 134, 244, 0.2)',
+      points: { show: false },
+    },
+  ],
+}
 export default function Page() {
-  const ref = useRef<HTMLDivElement>(null)
-  const u = useRef<uPlot>(null)
-  const x = useRef<number[]>(Array.from({ length: 20 }, (_, i) => i))
+  const xData = useRef(Array.from({ length: 500 }, (_, i) => i))
+  const noData = useRef<AlignedData>([[0, 1], [0, 0]]) // prettier-ignore
+  const [data, setData] = useState<AlignedData>(noData.current)
 
   useEffect(() => {
-    if (!ref.current) return
-
-    const opts: uPlot.Options = {
-      width: ref.current.clientWidth,
-      height: ref.current.clientHeight,
-      series: [
-        {},
-        {
-          width: 0,
-          fill: '#4285F4',
-          points: { show: false },
-          paths: uPlot.paths.bars!({ align: 1 }),
-        },
-      ],
-      axes: [
-        { show: false },
-        {
-          scale: 'y',
-          size: 60,
-        },
-      ],
-      cursor: { show: false },
-      legend: { show: false },
-      scales: {
-        x: {
-          time: false,
-          auto: false,
-          range: [0, 20],
-        },
-        y: {
-          // auto: false,
-          // range: {
-          //   min: { pad: 1 },
-          //   max: { pad: 1 },
-          // },
-        },
-      },
-    }
-
-    u.current = new uPlot(
-      opts,
-      [
-        x.current, // X轴数据
-        Array.from({ length: 20 }, (_, i) => i + 1), // Y轴数据
-      ],
-      ref.current
-    )
-
-    return () => {
-      u.current?.destroy()
-    }
-  }, [])
-
-  useLayoutEffect(() => {
-    const onResize = () => {
-      if (!u.current || !ref.current) return
-      u.current.setSize({
-        width: ref.current.clientWidth,
-        height: ref.current.clientHeight,
-      })
-    }
-    window.addEventListener('resize', onResize)
-    return () => {
-      window.removeEventListener('resize', onResize)
-    }
+    const interval = setInterval(() => {
+      setData([
+        xData.current,
+        Array.from({ length: 500 }, (_, i) => Math.round(Math.random() * 100)),
+      ])
+    }, 300)
+    return () => clearInterval(interval)
   }, [])
 
   return (
@@ -80,11 +41,11 @@ export default function Page() {
       style={{
         display: 'grid',
         grid: 'repeat(2, minmax(0, 1fr)) / 1fr',
-        padding: ' 1rem 2rem 1rem 0',
+        padding: '1rem',
         gap: '1rem',
       }}
     >
-      <div ref={ref} style={{ width: '100%', height: '100%', minWidth: '0px' }}></div>
+      <Chart opts={opts} data={data} />
     </main>
   )
 }

@@ -10,12 +10,8 @@ export function Dong() {
   const { store } = useStore()
 
   useEffect(() => {
-    worker.current?.postMessage({ opcode: 'uell', uell: store.uell })
+    worker.current?.postMessage({ opcode: 'run', uell: store.uell })
   }, [store.uell])
-
-  useEffect(() => {
-    worker.current?.postMessage({ opcode: 'uref', uref: store.uref })
-  }, [store.uref])
 
   useEffect(() => {
     if (ref.current === null) return
@@ -31,11 +27,11 @@ export function Dong() {
     ctx.fillStyle = '#00ABEB'
     ctx.fillRect(0, 0, 64, 64)
 
-    worker.current = new Worker(new URL('../../lib/b.ts', import.meta.url), { type: 'module' })
-    worker.current.postMessage({ opcode: 'init', uref: store.uref, cirs: store.cirs })
+    worker.current = new Worker(new URL('../../lib/worker.ts', import.meta.url), { type: 'module' })
+    worker.current.postMessage({ opcode: 'init', roi: store.roi, filter: store.filter })
     worker.current.onmessage = e => {
       const oc = new OffscreenCanvas(64, 64)
-      oc.getContext('2d')?.putImageData(new ImageData(e.data, 64, 64), 0, 0)
+      oc.getContext('2d')?.putImageData(new ImageData(e.data.dt, 64, 64), 0, 0)
       ctx.drawImage(oc, 0, 0)
     }
 

@@ -1,10 +1,6 @@
 import { createContext, useContext } from 'react'
-import cirs from '../lib/cirs'
-import uref from '../lib/uref'
 
 export const initialStore = {
-  cirs,
-  uref,
   uell: [] as number[],
   start: false,
   // 系统设置
@@ -14,8 +10,8 @@ export const initialStore = {
   hz: '4',
   sj: '2',
   kd: '3',
-  lb: '1',
-  ro: '1',
+  filter: 'no',
+  roi: 'dc',
   // 患者设置
   hz_name: '张三',
   hz_sex: '1',

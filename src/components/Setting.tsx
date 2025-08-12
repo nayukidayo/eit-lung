@@ -87,22 +87,22 @@ export default function Setting() {
         <IonItem>
           <IonSelect
             label="滤波设置"
-            value={store.lb}
-            onIonChange={e => setStore({ lb: e.detail.value })}
+            value={store.filter}
+            onIonChange={e => setStore({ filter: e.detail.value })}
           >
-            <IonSelectOption value="1">无滤波器</IonSelectOption>
-            <IonSelectOption value="2">低通滤波</IonSelectOption>
-            <IonSelectOption value="3">平滑滤波</IonSelectOption>
+            <IonSelectOption value="no">无滤波器</IonSelectOption>
+            <IonSelectOption value="smooth">平滑滤波</IonSelectOption>
+            <IonSelectOption value="lowpass">低通滤波</IonSelectOption>
           </IonSelect>
         </IonItem>
         <IonItem>
           <IonSelect
             label="ROI设置"
-            value={store.ro}
-            onIonChange={e => setStore({ ro: e.detail.value })}
+            value={store.roi}
+            onIonChange={e => setStore({ roi: e.detail.value })}
           >
-            <IonSelectOption value="1">象限</IonSelectOption>
-            <IonSelectOption value="2">多层</IonSelectOption>
+            <IonSelectOption value="dc">多层</IonSelectOption>
+            <IonSelectOption value="xx">象限</IonSelectOption>
           </IonSelect>
         </IonItem>
       </IonList>

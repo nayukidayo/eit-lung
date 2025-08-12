@@ -1,10 +1,7 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import uPlot, { type AlignedData, Options, Series, Scale } from 'uplot'
+import uPlot, { type AlignedData, Options } from 'uplot'
 
-export type Opts = {
-  range: Scale.Range
-  series: Series
-}
+export type Opts = Omit<Options, 'width' | 'height'>
 
 type ChartProps = {
   opts: Opts
@@ -22,32 +19,7 @@ export default function Chart({ opts, data }: ChartProps) {
       height: ref.current.clientHeight,
       cursor: { show: false },
       legend: { show: false },
-      axes: [
-        { show: false },
-        {
-          scale: 'y',
-          // grid: { show: false },
-          splits: (_, _idx, min: number, max: number) => {
-            const incr = (max - min) / 4
-            return [min, min + incr, min + incr * 2, min + incr * 3, max]
-          },
-        },
-      ],
-      scales: {
-        x: {
-          time: false,
-          auto: false,
-          range: opts.range,
-        },
-        y: {
-          range: (_, min: number, max: number) => {
-            if (min === max && min === 0) return [0, 4]
-            const buf = (max - min) * 0.1
-            return [min - buf, max + buf]
-          },
-        },
-      },
-      series: [{}, opts.series],
+      ...opts,
     }
     uplot.current = new uPlot(options, data, ref.current)
     return () => {

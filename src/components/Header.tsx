@@ -33,6 +33,8 @@ export default function Header() {
     }
   })
 
+  const handleSave = () => {}
+
   return (
     <header className={cs.a}>
       <img src="/logo.png" alt="logo" />
@@ -43,11 +45,11 @@ export default function Header() {
       ) : (
         <IonButton onClick={handleStart}>开始检测</IonButton>
       )}
-      <IonButton onClick={() => setStore({ uref: store.uell })} disabled={!store.start}>
-        空场标定
+      <IonButton disabled={!store.start}>空场标定</IonButton>
+      <IonButton onClick={handleSave} disabled={store.start}>
+        数据保存
       </IonButton>
-      <IonButton disabled>数据保存</IonButton>
-      <IonButton disabled>数据回放</IonButton>
+      <IonButton disabled={store.start}>数据回放</IonButton>
     </header>
   )
 }

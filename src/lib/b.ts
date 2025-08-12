@@ -1,3 +1,5 @@
+import graph from './graph'
+
 type Msg1 = {
   opcode: 'init' | 'uref' | 'cirs' | 'uell'
   uell: number[]
@@ -52,12 +54,9 @@ function greit(uell: number[], uref: number[], cirs: number[]) {
 function createImage(uell: number[]) {
   if (uell.length !== 208 || msg.uref.length !== 208 || msg.cirs.length !== 484224) return
   greit(uell, msg.uref, msg.cirs)
-  const a = new Uint8ClampedArray(64 * 64 * 4)
-  for (let i = 0; i < a.length; i += 4) {
-    a[i] = 0
-    a[i + 1] = 190
-    a[i + 2] = 0
-    a[i + 3] = 255
+  const a = new Uint8ClampedArray(64 * 64 * 4).fill(255)
+  for (let i = 0; i < graph.length; i++) {
+    a[graph[i] * 4] = 100
   }
   self.postMessage(a, { transfer: [a.buffer] })
 }
