@@ -2,17 +2,15 @@ import { setupIonicReact, IonApp } from '@ionic/react'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router'
 import Provider from './Provider'
 import Layout from './Layout'
-import Calib from './Calib'
+import Level from './Level'
+import Adjust from './Adjust'
 import Patient from './Patient'
 import Setting from './Setting'
-import Page from './Page'
-import View from './view/View'
-import Zhu from './view/Zhu'
-import TV from './view/TV'
-import Dong from './view/Dong'
-import Dian from './view/Dian'
-import Hu from './view/Hu'
-import Tong from './view/Tong'
+import MainLayout from './main/Layout'
+import Zhu from './main/Zhu'
+import TV from './main/TV'
+import Dong from './main/Dong'
+import Dian from './main/Dian'
 
 setupIonicReact()
 
@@ -23,19 +21,17 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="/view" />} />
-              <Route path="view" element={<View />}>
+              <Route path="/" element={<Navigate to="/main" />} />
+              <Route path="main" element={<MainLayout />}>
                 <Route index element={<Zhu />} />
                 <Route path="dong" element={<Dong />} />
                 <Route path="tv" element={<TV />} />
                 <Route path="dian" element={<Dian />} />
-                <Route path="hu" element={<Hu />} />
-                <Route path="tong" element={<Tong />} />
               </Route>
-              <Route path="zb" element={<Page />} />
-              <Route path="jz" element={<Calib />} />
-              <Route path="hz" element={<Patient />} />
-              <Route path="xt" element={<Setting />} />
+              <Route path="level" element={<Level />} />
+              <Route path="adjust" element={<Adjust />} />
+              <Route path="patient" element={<Patient />} />
+              <Route path="setting" element={<Setting />} />
             </Route>
           </Routes>
         </BrowserRouter>

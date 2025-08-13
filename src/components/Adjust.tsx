@@ -1,8 +1,8 @@
 import { useMemo, useRef } from 'react'
 import Chart, { type Opts } from './Chart'
-import useStore from '../hooks/useStore'
+import useStoreContext from '../hooks/useStoreContext'
 import uPlot, { type AlignedData } from 'uplot'
-import cs from './Calib.module.css'
+import cs from './Adjust.module.css'
 
 const opts: Opts = {
   scales: {
@@ -39,11 +39,11 @@ const opts: Opts = {
   ],
 }
 
-export default function Calibration() {
+export default function Adjust() {
   const xData = useRef(Array.from({ length: 208 }, (_, i) => i))
   const noData = useRef<AlignedData>([[0, 1], [0, 0]]) // prettier-ignore
 
-  const { store } = useStore()
+  const { store } = useStoreContext()
 
   const data = useMemo<AlignedData>(() => {
     if (store.uell.length === 0) return noData.current
@@ -52,7 +52,7 @@ export default function Calibration() {
 
   return (
     <main className={cs.a}>
-      <img src="/jz.png" alt="Calibration" />
+      <img src="/adjust.png" alt="adjust" />
       <Chart opts={opts} data={data} />
     </main>
   )

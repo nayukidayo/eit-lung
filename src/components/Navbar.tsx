@@ -1,23 +1,29 @@
 import { NavLink, To } from 'react-router'
 import { IonButton } from '@ionic/react'
-import useStore from '../hooks/useStore'
+import useStoreContext from '../hooks/useStoreContext'
 import cs from './Navbar.module.css'
 
 export default function Navbar() {
-  const { store } = useStore()
+  const { store } = useStoreContext()
 
   return (
     <nav className={cs.a}>
-      <NavButton to="/view">主菜单</NavButton>
-      <NavButton to="/gn" disabled>
+      <NavButton to="/main" disabled={store.start}>
+        主菜单
+      </NavButton>
+      <NavButton to="/func" disabled>
         功能性图像
       </NavButton>
-      <NavButton to="/zb">指标</NavButton>
-      <NavButton to="/jz">校准</NavButton>
-      <NavButton to="/hz" disabled={store.start}>
+      <NavButton to="/level" disabled={false}>
+        指标
+      </NavButton>
+      <NavButton to="/adjust" disabled={store.start}>
+        校准
+      </NavButton>
+      <NavButton to="/patient" disabled={store.start}>
         患者
       </NavButton>
-      <NavButton to="/xt" disabled={store.start}>
+      <NavButton to="/setting" disabled={store.start}>
         系统设置
       </NavButton>
     </nav>
@@ -26,18 +32,18 @@ export default function Navbar() {
 
 type NavButtonProps = {
   children: React.ReactNode
-  disabled?: boolean
+  disabled: boolean
   to: To
 }
 
 function NavButton({ children, disabled, to }: NavButtonProps) {
-  return disabled ? (
-    <IonButton disabled fill="solid">
-      {children}
-    </IonButton>
-  ) : (
-    <NavLink to={to}>
-      {({ isActive }) => <IonButton fill={isActive ? 'outline' : 'solid'}>{children}</IonButton>}
+  return (
+    <NavLink to={to} className={disabled ? cs.d : ''} tabIndex={disabled ? -1 : 0}>
+      {({ isActive }) => (
+        <IonButton disabled={disabled} fill={isActive ? 'outline' : 'solid'}>
+          {children}
+        </IonButton>
+      )}
     </NavLink>
   )
 }

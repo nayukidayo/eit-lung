@@ -1,7 +1,7 @@
 import { Dong } from './Dong'
 import { TV } from './TV'
 import { Dian } from './Dian'
-import ROI from './ROI'
+import ROI from './Roi'
 import cs from './Zhu.module.css'
 
 export default function Zhu() {

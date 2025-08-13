@@ -1,37 +1,24 @@
-import { useEffect, useRef } from 'react'
 import { IonButton } from '@ionic/react'
-import type { PluginListenerHandle } from '@capacitor/core'
 import { usb } from '../lib/usb'
-import useStore from '../hooks/useStore'
+import useStoreContext from '../hooks/useStoreContext'
+import useWorkerContext from '../hooks/useWorkerContext'
 import cs from './Header.module.css'
 
 export default function Header() {
-  const listener = useRef<PluginListenerHandle>(null)
-  const { store, setStore } = useStore()
+  const { store, setStore } = useStoreContext()
+  const { postMessage } = useWorkerContext()
 
   const handleStart = () => {
     setStore({ start: true })
-    const [mode1, mode2] = store.cl.split(',').map(Number)
-    usb.start({ mode1, mode2, freq: Number(store.jl) })
+    const [mode1, mode2] = store.mode.split(',').map(Number)
+    usb.start({ mode1, mode2, freq: Number(store.freq) })
+    postMessage({ opcode: 'init', roi: store.roi, filter: store.filter })
   }
 
   const handleStop = () => {
     setStore({ start: false })
     usb.stop()
   }
-
-  useEffect(() => {
-    usb
-      .addListener('data', e => {
-        setStore({ uell: e.data })
-      })
-      .then(cb => {
-        listener.current = cb
-      })
-    return () => {
-      listener.current?.remove()
-    }
-  })
 
   const handleSave = () => {}
 

@@ -1,6 +1,6 @@
-import cs from './ROI.module.css'
+import cs from './Roi.module.css'
 
-export default function ROI() {
+export default function Roi() {
   return (
     <div className={cs.a}>
       <div>

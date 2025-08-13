@@ -9,11 +9,6 @@
  */
 
 class A {
-  uref: number[] = []
-  cirs: number[] = []
-
-  constructor() {}
-
   smooth(uell: number[], size = 2) {
     const a = Array.from<number>({ length: uell.length })
     for (let i = 0; i < uell.length; i++) {
@@ -64,36 +59,5 @@ class A {
       b += c
     }
     return b
-  }
-}
-
-class B extends A {
-  sums: number[] = []
-  peaks: number[] = []
-  valleys: number[] = []
-  uells: number[][] = []
-
-  constructor() {
-    super()
-  }
-
-  private pushSums(sum: number) {
-    if (this.sums.length >= 500) {
-      this.sums.shift()
-    }
-    this.sums.push(sum)
-  }
-
-  handler(uell: number[]) {
-    const smoothed = this.smooth(uell)
-    this.pushSums(this.greitAndSum(smoothed, this.uref, this.cirs))
-    this.findPeaksAndValleys(smoothed)
-  }
-
-  findPeaksAndValleys(uell: number[]) {
-    if (this.sums.length < 2) {
-      return uell
-    }
-    return []
   }
 }

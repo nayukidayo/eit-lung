@@ -1,12 +1,12 @@
 import { useRef } from 'react'
 import { IonAlert, IonItem, IonLabel, IonList, IonSelect, IonSelectOption } from '@ionic/react'
 import type { OverlayEventDetail } from '@ionic/core/components'
-import useStore from '../hooks/useStore'
+import useStoreContext from '../hooks/useStoreContext'
 
 export default function Patient() {
   const hz_sex = useRef<HTMLIonSelectElement>(null)
 
-  const { store, setStore } = useStore()
+  const { store, setStore } = useStoreContext()
 
   const onDidDismiss = (e: CustomEvent<OverlayEventDetail>) => {
     if (e.detail.role === 'ok') {

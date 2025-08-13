@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Chart, { type Opts } from './Chart'
 import type { AlignedData } from 'uplot'
-// import cs from './Page.module.css'
 
 const opts: Opts = {
   scales: {
@@ -21,7 +20,7 @@ const opts: Opts = {
     },
   ],
 }
-export default function Page() {
+export default function Level() {
   const xData = useRef(Array.from({ length: 500 }, (_, i) => i))
   const noData = useRef<AlignedData>([[0, 1], [0, 0]]) // prettier-ignore
   const [data, setData] = useState<AlignedData>(noData.current)

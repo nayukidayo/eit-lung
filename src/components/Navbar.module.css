@@ -9,3 +9,7 @@
     width: 120px;
   }
 }
+
+.d {
+  pointer-events: none;
+}

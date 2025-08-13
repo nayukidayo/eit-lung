@@ -1,8 +1,8 @@
 import { IonItem, IonList, IonSelect, IonSelectOption } from '@ionic/react'
-import useStore from '../hooks/useStore'
+import useStoreContext from '../hooks/useStoreContext'
 
 export default function Setting() {
-  const { store, setStore } = useStore()
+  const { store, setStore } = useStoreContext()
 
   return (
     <main>
@@ -10,8 +10,8 @@ export default function Setting() {
         <IonItem>
           <IonSelect
             label="激励频率"
-            value={store.jl}
-            onIonChange={e => setStore({ jl: e.detail.value })}
+            value={store.freq}
+            onIonChange={e => setStore({ freq: e.detail.value })}
           >
             <IonSelectOption value="4">10K</IonSelectOption>
             <IonSelectOption value="8">20K</IonSelectOption>
@@ -28,8 +28,8 @@ export default function Setting() {
         <IonItem>
           <IonSelect
             label="测量模式"
-            value={store.cl}
-            onIonChange={e => setStore({ cl: e.detail.value })}
+            value={store.mode}
+            onIonChange={e => setStore({ mode: e.detail.value })}
           >
             <IonSelectOption value="26,30">Obj-Amp</IonSelectOption>
             <IonSelectOption value="28,30">Obj-Phase</IonSelectOption>

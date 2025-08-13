@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Area, AreaChart, ResponsiveContainer } from 'recharts'
-import ROI from './ROI'
+import ROI from './Roi'
 import cs from './Dian.module.css'
 
 type ValType = {
