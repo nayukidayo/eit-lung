@@ -12,6 +12,7 @@ type Msg = {
 }
 
 export type WorkerContextValue = {
+  uell?: number[]
   msg?: Msg
   postMessage: (message: any, transfer?: Transferable[]) => void
 }
@@ -22,10 +23,11 @@ export default function useWorkerContext() {
   return useContext(WorkerContext)
 }
 
-export function useWorker() {
+export function useWorker(): WorkerContextValue {
   const worker = useRef<Worker>(null)
   const listener = useRef<PluginListenerHandle>(null)
   const [msg, setMsg] = useState<Msg>()
+  const [uell, setUell] = useState<number[]>()
 
   useEffect(() => {
     worker.current = new Worker(new URL('../lib/worker.ts', import.meta.url), { type: 'module' })
@@ -35,6 +37,7 @@ export function useWorker() {
     usb
       .addListener('data', e => {
         worker.current?.postMessage({ opcode: 'run', uell: e.data })
+        setUell(e.data)
       })
       .then(cb => {
         listener.current = cb
@@ -49,5 +52,5 @@ export function useWorker() {
     worker.current?.postMessage(message, transfer)
   }
 
-  return { msg, postMessage }
+  return { uell, msg, postMessage }
 }

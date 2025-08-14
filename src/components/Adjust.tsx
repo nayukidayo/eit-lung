@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react'
-import Chart, { type Opts } from './Chart'
-import useStoreContext from '../hooks/useStoreContext'
-import uPlot, { type AlignedData } from 'uplot'
+import uPlot, { AlignedData } from 'uplot'
+import Chart, { Opts } from './Chart'
+import useWorkerContext from '../hooks/useWorkerContext'
 import cs from './Adjust.module.css'
 
 const opts: Opts = {
@@ -40,15 +40,21 @@ const opts: Opts = {
 }
 
 export default function Adjust() {
-  const xData = useRef(Array.from({ length: 208 }, (_, i) => i))
-  const noData = useRef<AlignedData>([[0, 1], [0, 0]]) // prettier-ignore
+  const xData = useRef<number[]>(null)
+  if (xData.current === null) {
+    xData.current = Array.from({ length: 208 }, (_, i) => i)
+  }
 
-  const { store } = useStoreContext()
+  const noData = useRef<AlignedData>(null)
+  if (noData.current === null) {
+    noData.current = [[0, 1], [0, 0]] // prettier-ignore
+  }
+
+  const { uell } = useWorkerContext()
 
   const data = useMemo<AlignedData>(() => {
-    if (store.uell.length === 0) return noData.current
-    return [xData.current, store.uell]
-  }, [store.uell])
+    return uell ? [xData.current!, uell] : noData.current!
+  }, [uell])
 
   return (
     <main className={cs.a}>

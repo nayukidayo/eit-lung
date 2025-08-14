@@ -31,7 +31,7 @@ export default function useStoreContext() {
   return useContext(StoreContext)
 }
 
-export function useStore() {
+export function useStore(): StoreContextValue {
   const [store, setStore] = useState<Store>(defaultStore)
   const mergeStore = (value: Partial<Store>) => setStore(prev => ({ ...prev, ...value }))
   return { store, setStore: mergeStore }

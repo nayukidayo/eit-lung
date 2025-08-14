@@ -1,5 +1,5 @@
-import { useEffect, useLayoutEffect, useRef } from 'react'
-import uPlot, { type AlignedData, Options } from 'uplot'
+import { memo, useEffect, useLayoutEffect, useRef } from 'react'
+import uPlot, { AlignedData, Options } from 'uplot'
 
 export type Opts = Omit<Options, 'width' | 'height'>
 
@@ -8,9 +8,11 @@ type ChartProps = {
   data: AlignedData
 }
 
-export default function Chart({ opts, data }: ChartProps) {
+function Chart({ opts, data }: ChartProps) {
   const ref = useRef<HTMLDivElement>(null)
   const uplot = useRef<uPlot>(null)
+
+  uplot.current?.setData(data)
 
   useEffect(() => {
     if (!ref.current) return
@@ -26,10 +28,6 @@ export default function Chart({ opts, data }: ChartProps) {
       uplot.current?.destroy()
     }
   }, [])
-
-  useEffect(() => {
-    uplot.current?.setData(data)
-  }, [data])
 
   useLayoutEffect(() => {
     const onResize = () => {
@@ -47,3 +45,7 @@ export default function Chart({ opts, data }: ChartProps) {
 
   return <div ref={ref} style={{ width: '100%', height: '100%', minWidth: '0px' }}></div>
 }
+
+export default memo(Chart, (prev, next) => {
+  return Object.is(prev.data[0], next.data[0]) && Object.is(prev.data[1], next.data[1])
+})

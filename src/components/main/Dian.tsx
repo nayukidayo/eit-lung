@@ -1,93 +1,64 @@
-import { useEffect, useState } from 'react'
-import { Area, AreaChart, ResponsiveContainer } from 'recharts'
+import { useEffect, useRef, useState } from 'react'
+import type { AlignedData } from 'uplot'
+import Chart, { Opts } from '../Chart'
 import ROI from './Roi'
 import cs from './Dian.module.css'
 
-type ValType = {
-  value: number
+const opts: Opts = {
+  scales: {
+    x: {
+      time: false,
+      auto: false,
+      range: [0, 500],
+    },
+  },
+  axes: [{ show: false }, { show: false }],
+  series: [
+    {},
+    {
+      stroke: 'rgba(66, 133, 244, 1)',
+      fill: 'rgba(66, 134, 244, 0.2)',
+      points: { show: false },
+    },
+  ],
 }
 
 export function Dian() {
-  const [val, setVal] = useState<ValType[]>([])
+  const xData = useRef(Array.from({ length: 500 }, (_, i) => i))
+  const noData = useRef<AlignedData>([[0, 1], [0, 0]]) // prettier-ignore
+  const [data, setData] = useState<AlignedData>(noData.current)
 
   useEffect(() => {
-    const arr = Array.from({ length: 28 }).map(() => ({
-      value: Math.floor(Math.random() * 100),
-    }))
-    setVal(arr)
+    const interval = setInterval(() => {
+      setData([
+        xData.current,
+        Array.from({ length: 500 }, (_, i) => Math.round(Math.random() * 100)),
+      ])
+    }, 300)
+    return () => clearInterval(interval)
   }, [])
 
   return (
     <div className={cs.c}>
       <div className={cs.b}>
         <div>Total</div>
-        <ResponsiveContainer>
-          <AreaChart data={val}>
-            <Area
-              isAnimationActive={false}
-              type="monotone"
-              dataKey="value"
-              stroke="#8884d8"
-              fill="#8884d8"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <Chart opts={opts} data={data} />
       </div>
       <div className={cs.b}>
         <div>ROI1</div>
-        <ResponsiveContainer>
-          <AreaChart data={val}>
-            <Area
-              isAnimationActive={false}
-              type="monotone"
-              dataKey="value"
-              stroke="#8884d8"
-              fill="#8884d8"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <Chart opts={opts} data={data} />
       </div>
       <div className={cs.b}>
         <div>ROI2</div>
-        <ResponsiveContainer>
-          <AreaChart data={val}>
-            <Area
-              isAnimationActive={false}
-              type="monotone"
-              dataKey="value"
-              stroke="#8884d8"
-              fill="#8884d8"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <Chart opts={opts} data={data} />
       </div>
       <div className={cs.b}>
         <div>ROI3</div>
-        <ResponsiveContainer>
-          <AreaChart data={val}>
-            <Area
-              isAnimationActive={false}
-              type="monotone"
-              dataKey="value"
-              stroke="#8884d8"
-              fill="#8884d8"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <Chart opts={opts} data={data} />
       </div>
       <div className={cs.b}>
         <div>ROI4</div>
-        <ResponsiveContainer>
-          <AreaChart data={val}>
-            <Area
-              isAnimationActive={false}
-              type="monotone"
-              dataKey="value"
-              stroke="#8884d8"
-              fill="#8884d8"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <Chart opts={opts} data={data} />
       </div>
     </div>
   )

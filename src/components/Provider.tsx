@@ -6,12 +6,12 @@ type ProviderProps = {
 }
 
 export default function Provider({ children }: ProviderProps) {
-  const { store, setStore } = useStore()
-  const { msg, postMessage } = useWorker()
+  const storeContextValue = useStore()
+  const workerContextValue = useWorker()
 
   return (
-    <StoreContext value={{ store, setStore }}>
-      <WorkerContext value={{ msg, postMessage }}>{children}</WorkerContext>
+    <StoreContext value={storeContextValue}>
+      <WorkerContext value={workerContextValue}>{children}</WorkerContext>
     </StoreContext>
   )
 }

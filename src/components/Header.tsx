@@ -33,10 +33,10 @@ export default function Header() {
         <IonButton onClick={handleStart}>开始检测</IonButton>
       )}
       <IonButton disabled={!store.start}>空场标定</IonButton>
-      <IonButton onClick={handleSave} disabled={store.start}>
+      <IonButton onClick={handleSave} disabled>
         数据保存
       </IonButton>
-      <IonButton disabled={store.start}>数据回放</IonButton>
+      <IonButton disabled>数据回放</IonButton>
     </header>
   )
 }

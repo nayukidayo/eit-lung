@@ -14,7 +14,7 @@ export default function Navbar() {
       <NavButton to="/func" disabled>
         功能性图像
       </NavButton>
-      <NavButton to="/level" disabled={false}>
+      <NavButton to="/level" disabled>
         指标
       </NavButton>
       <NavButton to="/adjust" disabled={store.start}>
