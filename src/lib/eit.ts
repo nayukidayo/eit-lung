@@ -3,11 +3,16 @@ import cirs from './cirs'
 import uref from './uref'
 
 export type Msg = {
-  r1: number
-  r2: number
-  r3: number
-  r4: number
-  rg: number
+  br: number
+  tv1: number
+  tv2: number
+  tv3: number
+  tv4: number
+  roi0: number
+  roi1: number
+  roi2: number
+  roi3: number
+  roi4: number
   dt: Uint8ClampedArray<ArrayBuffer>
 }
 
@@ -68,6 +73,8 @@ export default class EIT {
       this.sum(msg, i, a)
       this.draw(msg, i, a)
     }
+    this.ratio(msg)
+    this.peakValley(msg)
     return msg
   }
 
@@ -88,6 +95,8 @@ export default class EIT {
       this.sum(msg, i, a)
       this.draw(msg, i, a)
     }
+    this.ratio(msg)
+    this.peakValley(msg)
     return msg
   }
 
@@ -97,16 +106,28 @@ export default class EIT {
 
   private msg(): Msg {
     return {
-      r1: 0,
-      r2: 0,
-      r3: 0,
-      r4: 0,
-      rg: 0,
+      br: 0,
+      tv1: 0,
+      tv2: 0,
+      tv3: 0,
+      tv4: 0,
+      roi0: 0,
+      roi1: 0,
+      roi2: 0,
+      roi3: 0,
+      roi4: 0,
       dt: new Uint8ClampedArray(64 * 64 * 4).fill(255),
     }
   }
 
-  private draw(msg: Msg, i: number, a: number) {
+  private ratio(msg: Msg) {
+    msg.tv1 = msg.roi1 / msg.roi0
+    msg.tv2 = msg.roi2 / msg.roi0
+    msg.tv3 = msg.roi3 / msg.roi0
+    msg.tv4 = msg.roi4 / msg.roi0
+  }
+
+  private draw(msg: Msg, i: number, _a: number) {
     msg.dt[this.graph[i] * 4] = 100
   }
 
@@ -114,19 +135,19 @@ export default class EIT {
     if (this.roi === 'dc') {
       switch (true) {
         case i <= 209:
-          msg.r4 += a
+          msg.roi4 += a
           break
         case i <= 1188:
-          msg.r3 += a
+          msg.roi3 += a
           break
         case i <= 2107:
-          msg.r2 += a
+          msg.roi2 += a
           break
         // case i <= 2327:
-        //   msg.r1 += a
+        //   msg.roi1 += a
         //   break
         default:
-          msg.r1 += a
+          msg.roi1 += a
           break
       }
     } else {
@@ -153,7 +174,7 @@ export default class EIT {
         case i >= 997 && i <= 1028:
         case i >= 1061 && i <= 1092:
         case i >= 1125 && i <= 1156:
-          msg.r3 += a
+          msg.roi3 += a
           break
         case i >= 9 && i <= 16:
         case i >= 31 && i <= 43:
@@ -177,7 +198,7 @@ export default class EIT {
         case i >= 1029 && i <= 1060:
         case i >= 1093 && i <= 1124:
         case i >= 1157 && i <= 1188:
-          msg.r4 += a
+          msg.roi4 += a
           break
         case i >= 1189 && i <= 1219:
         case i >= 1252 && i <= 1282:
@@ -201,7 +222,7 @@ export default class EIT {
         case i >= 2240 && i <= 2258:
         case i >= 2279 && i <= 2294:
         case i >= 2312 && i <= 2321:
-          msg.r1 += a
+          msg.roi1 += a
           break
         // case i >= 1220 && i <= 1251:
         // case i >= 1283 && i <= 1313:
@@ -228,10 +249,50 @@ export default class EIT {
         //   msg.r2 += a
         //   break
         default:
-          msg.r2 += a
+          msg.roi2 += a
           break
       }
     }
-    msg.rg = msg.r1 + msg.r2 + msg.r3 + msg.r4
+    msg.roi0 = msg.roi1 + msg.roi2 + msg.roi3 + msg.roi4
+  }
+
+  private sums: number[] = []
+  // private peek = {
+  //   value: 0,
+  //   time: 0,
+  // }
+  private valley = {
+    value: 0,
+    time: 0,
+  }
+
+  private peakValley(msg: Msg) {
+    if (this.sums.length >= 5) {
+      this.sums.shift()
+    }
+    this.sums.push(msg.roi0)
+    const [a, b, c, d, e] = this.sums
+    // if (a < b && b < c && c > d && d > e) {
+    //   // peek
+    //   this.peek = {
+    //     value: c,
+    //     time: Date.now(),
+    //   }
+    // } else if (a > b && b > c && c < d && d < e) {
+    //   // valley
+    //   const now = Date.now()
+    //   if (this.valley) {
+    //     msg.br = 60000 / (now - this.valley.time)
+    //   }
+    //   this.valley = { value: c, time: now }
+    // }
+    if (a > b && b > c && c < d && d < e) {
+      // valley
+      const now = Date.now()
+      if (this.valley) {
+        msg.br = 60000 / (now - this.valley.time)
+      }
+      this.valley = { value: c, time: now }
+    }
   }
 }

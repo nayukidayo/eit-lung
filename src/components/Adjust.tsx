@@ -13,7 +13,7 @@ const opts: Opts = {
     },
     y: {
       range: (_, min: number, max: number) => {
-        if (min === max && min === 0) return [0, 4]
+        if (min === null) return [0, 4]
         const buf = (max - min) * 0.1
         return [min - buf, max + buf]
       },
@@ -40,20 +40,15 @@ const opts: Opts = {
 }
 
 export default function Adjust() {
-  const xData = useRef<number[]>(null)
-  if (xData.current === null) {
-    xData.current = Array.from({ length: 208 }, (_, i) => i)
-  }
-
-  const noData = useRef<AlignedData>(null)
-  if (noData.current === null) {
-    noData.current = [[0, 1], [0, 0]] // prettier-ignore
+  const xAxis = useRef<number[]>(null)
+  if (xAxis.current === null) {
+    xAxis.current = Array.from({ length: 208 }, (_, i) => i)
   }
 
   const { uell } = useWorkerContext()
 
   const data = useMemo<AlignedData>(() => {
-    return uell ? [xData.current!, uell] : noData.current!
+    return uell ? [xAxis.current!, uell] : []
   }, [uell])
 
   return (

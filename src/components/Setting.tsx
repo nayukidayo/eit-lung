@@ -1,8 +1,23 @@
 import { IonItem, IonList, IonSelect, IonSelectOption } from '@ionic/react'
+import type { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core'
 import useStoreContext from '../hooks/useStoreContext'
+import useWorkerContext from '../hooks/useWorkerContext'
+
+type Isce = IonSelectCustomEvent<SelectChangeEventDetail<string>>
 
 export default function Setting() {
   const { store, setStore } = useStoreContext()
+  const { postMessage } = useWorkerContext()
+
+  const filterChange = (e: Isce) => {
+    setStore({ filter: e.detail.value })
+    postMessage({ opcode: 'init', filter: e.detail.value, roi: store.roi })
+  }
+
+  const roiChange = (e: Isce) => {
+    setStore({ roi: e.detail.value })
+    postMessage({ opcode: 'init', roi: e.detail.value, filter: store.filter })
+  }
 
   return (
     <main>
@@ -85,22 +100,14 @@ export default function Setting() {
           </IonSelect>
         </IonItem>
         <IonItem>
-          <IonSelect
-            label="滤波设置"
-            value={store.filter}
-            onIonChange={e => setStore({ filter: e.detail.value })}
-          >
+          <IonSelect label="滤波设置" value={store.filter} onIonChange={filterChange}>
             <IonSelectOption value="no">无滤波器</IonSelectOption>
             <IonSelectOption value="smooth">平滑滤波</IonSelectOption>
             <IonSelectOption value="lowpass">低通滤波</IonSelectOption>
           </IonSelect>
         </IonItem>
         <IonItem>
-          <IonSelect
-            label="ROI设置"
-            value={store.roi}
-            onIonChange={e => setStore({ roi: e.detail.value })}
-          >
+          <IonSelect label="ROI设置" value={store.roi} onIonChange={roiChange}>
             <IonSelectOption value="dc">多层</IonSelectOption>
             <IonSelectOption value="xx">象限</IonSelectOption>
           </IonSelect>

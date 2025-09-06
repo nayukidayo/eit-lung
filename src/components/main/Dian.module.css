@@ -16,3 +16,7 @@
     align-self: center;
   }
 }
+
+.b + .b {
+  border-top: 1px solid #ececec;
+}

@@ -6,7 +6,7 @@ import cs from './Header.module.css'
 
 export default function Header() {
   const { store, setStore } = useStoreContext()
-  const { postMessage } = useWorkerContext()
+  const { uell, postMessage } = useWorkerContext()
 
   const handleStart = () => {
     setStore({ start: true })
@@ -20,7 +20,9 @@ export default function Header() {
     usb.stop()
   }
 
-  const handleSave = () => {}
+  const handleUref = () => {
+    postMessage({ opcode: 'uref', uref: uell })
+  }
 
   return (
     <header className={cs.a}>
@@ -32,10 +34,10 @@ export default function Header() {
       ) : (
         <IonButton onClick={handleStart}>开始检测</IonButton>
       )}
-      <IonButton disabled={!store.start}>空场标定</IonButton>
-      <IonButton onClick={handleSave} disabled>
-        数据保存
+      <IonButton onClick={handleUref} disabled={!store.start}>
+        空场标定
       </IonButton>
+      <IonButton disabled>数据保存</IonButton>
       <IonButton disabled>数据回放</IonButton>
     </header>
   )

@@ -46,6 +46,4 @@ function Chart({ opts, data }: ChartProps) {
   return <div ref={ref} style={{ width: '100%', height: '100%', minWidth: '0px' }}></div>
 }
 
-export default memo(Chart, (prev, next) => {
-  return Object.is(prev.data[0], next.data[0]) && Object.is(prev.data[1], next.data[1])
-})
+export default memo(Chart)

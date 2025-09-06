@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Outlet, useNavigate } from 'react-router'
 import { IonSegment, IonSegmentButton, IonLabel } from '@ionic/react'
-import type { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core/components'
+import type { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core'
 import cs from './Layout.module.css'
 
 export default function View() {

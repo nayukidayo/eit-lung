@@ -30,8 +30,8 @@ export function Dong() {
     if (ctx.current === null) return
     const line = ctx.current.createLinearGradient(0, 0, 0, 64)
     line.addColorStop(0, '#00ABEB')
-    line.addColorStop(0.5, '#FFFFFF')
-    line.addColorStop(1, '#26C000')
+    line.addColorStop(0.5, '#26C000')
+    line.addColorStop(1, '#DFEB00')
     ctx.current.fillStyle = line
     ctx.current.fillRect(68, 0, 2, 64)
     ctx.current.fillStyle = '#00ABEB'

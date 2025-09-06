@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { IonAlert, IonItem, IonLabel, IonList, IonSelect, IonSelectOption } from '@ionic/react'
-import type { OverlayEventDetail } from '@ionic/core/components'
+import type { OverlayEventDetail } from '@ionic/core'
 import useStoreContext from '../hooks/useStoreContext'
 
 export default function Patient() {

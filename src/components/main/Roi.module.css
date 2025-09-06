@@ -16,6 +16,8 @@
       border: var(--border);
       border-width: 2px;
       border-radius: 4px;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 }

@@ -26,15 +26,3 @@ self.onmessage = (e: MessageEvent<OP>) => {
     return
   }
 }
-
-type result = {
-  tr1: number
-  tr2: number
-  tr3: number
-  tr4: number
-  r0: number[]
-  r1: number[]
-  r2: number[]
-  r3: number[]
-  r4: number[]
-}

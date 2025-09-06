@@ -1,7 +1,6 @@
 import { createContext, useContext, useState } from 'react'
 
 const defaultStore = {
-  uell: [] as number[],
   start: false,
   // 系统设置
   freq: '4',
@@ -10,8 +9,8 @@ const defaultStore = {
   hz: '4',
   sj: '2',
   kd: '3',
-  filter: 'no',
-  roi: 'dc',
+  filter: 'smooth',
+  roi: 'xx',
   // 患者设置
   hz_name: '张三',
   hz_sex: '1',
