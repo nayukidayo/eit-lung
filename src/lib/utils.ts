@@ -1,5 +1,6 @@
-export function toFixed2(num: number = 0) {
-  return Math.round(num * 10000) / 100
+export function toFixed(num: number, fixed = 1) {
+  const pow = Math.pow(10, fixed)
+  return Math.round(num * pow) / pow
 }
 
 export function formatNow() {

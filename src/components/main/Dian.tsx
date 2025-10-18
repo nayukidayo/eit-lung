@@ -1,22 +1,31 @@
-import { useMemo, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import type { AlignedData } from 'uplot'
 import Chart, { Opts } from '../Chart'
 import ROI from './Roi'
 import cs from './Dian.module.css'
 import useEitContext from '../../hooks/useEitContext'
+import { toFixed } from '../../lib/utils'
 
-const opts: Opts = {
-  scales: {
-    x: {
-      time: false,
-      auto: false,
-      range: [0, 499],
+const TotalOpts: Opts = {
+  legend: { show: true, live: false },
+  axes: [
+    {
+      gap: 0,
+      size: 10,
+      values: (_u, splits) => splits.map(() => null),
     },
-  },
-  axes: [{ show: false }, { show: false }],
+    {
+      splits: (_u, _idx, min, max) => {
+        const incr = (max - min) / 4
+        const arr = [min, min + incr, min + incr * 2, min + incr * 3, max]
+        return arr.map(v => toFixed(v))
+      },
+    },
+  ],
   series: [
     {},
     {
+      label: 'Total',
       stroke: 'rgba(66, 133, 244, 1)',
       fill: 'rgba(66, 134, 244, 0.2)',
       points: { show: false },
@@ -24,48 +33,83 @@ const opts: Opts = {
   ],
 }
 
+const RoiOpts: Opts = {
+  legend: { show: true, live: false },
+  axes: [
+    {
+      size: 30,
+      values: '{mm}:{ss}',
+      // values: '{ss}.{fff}',
+    },
+    {
+      splits: (_u, _idx, min, max) => {
+        const incr = (max - min) / 4
+        const arr = [min, min + incr, min + incr * 2, min + incr * 3, max]
+        return arr.map(v => toFixed(v))
+      },
+    },
+  ],
+  series: [
+    {},
+    {
+      label: 'Roi1',
+      stroke: 'rgba(244, 244, 56, 1)',
+      // fill: 'rgba(244, 244, 56, 0.2)',
+      points: { show: false },
+    },
+    {
+      label: 'Roi2',
+      stroke: 'rgba(66, 244, 81, 1)',
+      // fill: 'rgba(66, 244, 81, 0.2)',
+      points: { show: false },
+    },
+    {
+      label: 'Roi3',
+      stroke: 'rgba(244, 66, 244, 1)',
+      // fill: 'rgba(244, 66, 244, 0.2)',
+      points: { show: false },
+    },
+    {
+      label: 'Roi4',
+      stroke: 'rgba(244, 93, 66, 1)',
+      // fill: 'rgba((244, 93, 66, 0.2)',
+      points: { show: false },
+    },
+  ],
+}
+
 export function Dian() {
-  const xAxis = useRef<number[]>(null)
-  if (xAxis.current === null) {
-    xAxis.current = Array.from({ length: 500 }, (_, i) => i)
-  }
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!ref.current) return
+    const legend = ref.current.firstElementChild!.querySelector<HTMLElement>('.u-legend')!
+    const tbody = ref.current.lastElementChild!.querySelector<HTMLElement>('.u-legend tbody')!
+    const tr = legend.firstChild!.firstChild
+    if (!tr) return
+    tbody.insertBefore(tr, tbody.firstChild)
+    legend.style.display = 'none'
+  }, [])
 
   const msg = useEitContext()
 
-  const data = useMemo<AlignedData[]>(() => {
-    if (!msg) return Array<AlignedData>(5).fill([])
-    const arr = xAxis.current!.slice(0, msg.dian[0].length)
-    return [
-      [arr, msg.dian[0]],
-      [arr, msg.dian[1]],
-      [arr, msg.dian[2]],
-      [arr, msg.dian[3]],
-      [arr, msg.dian[4]],
-    ]
-  }, [msg])
+  const data: Record<string, AlignedData> = !msg
+    ? { total: [], roi: [] }
+    : {
+        total: [msg.dian.time, msg.dian.data[0]],
+        roi: [
+          msg.dian.time,
+          msg.dian.data[1],
+          msg.dian.data[2],
+          msg.dian.data[3],
+          msg.dian.data[4],
+        ],
+      }
 
   return (
-    <div className={cs.c}>
-      <div className={cs.b}>
-        <div>Total</div>
-        <Chart opts={opts} data={data[0]} />
-      </div>
-      <div className={cs.b}>
-        <div>ROI1</div>
-        <Chart opts={opts} data={data[1]} />
-      </div>
-      <div className={cs.b}>
-        <div>ROI2</div>
-        <Chart opts={opts} data={data[2]} />
-      </div>
-      <div className={cs.b}>
-        <div>ROI3</div>
-        <Chart opts={opts} data={data[3]} />
-      </div>
-      <div className={cs.b}>
-        <div>ROI4</div>
-        <Chart opts={opts} data={data[4]} />
-      </div>
+    <div className={cs.q} ref={ref}>
+      <Chart opts={TotalOpts} data={data.total} />
+      <Chart opts={RoiOpts} data={data.roi} />
     </div>
   )
 }

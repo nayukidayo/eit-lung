@@ -1,22 +1,9 @@
 .a {
   display: grid;
-  grid: 1fr min-content / 1fr;
+  grid: minmax(0, 1fr) max-content / 1fr;
 }
 
-.c {
+.q {
   display: grid;
-  grid: repeat(5, minmax(0, 1fr)) / 1fr;
-}
-
-.b {
-  display: grid;
-  grid: minmax(0, 1fr) / 3rem minmax(0, 1fr);
-
-  > div:first-of-type {
-    align-self: center;
-  }
-}
-
-.b + .b {
-  border-top: 1px solid #ececec;
+  grid: repeat(2, minmax(0, 1fr) ) 30px / 1fr;
 }

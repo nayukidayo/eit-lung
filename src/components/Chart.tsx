@@ -14,6 +14,14 @@ function Chart({ opts, data }: ChartProps) {
 
   uplot.current?.setData(data)
 
+  const onResize = () => {
+    if (!uplot.current || !ref.current) return
+    uplot.current.setSize({
+      width: ref.current.clientWidth,
+      height: ref.current.clientHeight,
+    })
+  }
+
   useEffect(() => {
     if (!ref.current) return
     const options: Options = {
@@ -24,26 +32,20 @@ function Chart({ opts, data }: ChartProps) {
       ...opts,
     }
     uplot.current = new uPlot(options, data, ref.current)
+    setTimeout(onResize, 10)
     return () => {
       uplot.current?.destroy()
     }
   }, [])
 
   useLayoutEffect(() => {
-    const onResize = () => {
-      if (!uplot.current || !ref.current) return
-      uplot.current.setSize({
-        width: ref.current.clientWidth,
-        height: ref.current.clientHeight,
-      })
-    }
     window.addEventListener('resize', onResize)
     return () => {
       window.removeEventListener('resize', onResize)
     }
   }, [])
 
-  return <div ref={ref} style={{ width: '100%', height: '100%', minWidth: '0px' }}></div>
+  return <div ref={ref} style={{ width: '100%', height: '100%', minWidth: 0, minHeight: 0 }}></div>
 }
 
 export default memo(Chart)

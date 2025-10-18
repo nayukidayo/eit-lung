@@ -13,7 +13,10 @@ export type Config = {
 
 export type F64A = Float64Array<ArrayBuffer>
 export type U8CA = Uint8ClampedArray<ArrayBuffer>
-export type Dian = [number[], number[], number[], number[], number[]]
+export type Dian = {
+  time: number[]
+  data: [number[], number[], number[], number[], number[]]
+}
 
 export type EitData = {
   uell: F64A
@@ -34,7 +37,7 @@ export type WorkerData = {
 class EIT extends EventTarget {
   private worker: Worker
   private uells: number[][] = []
-  private dian: Dian = [[], [], [], [], []]
+  private dian: Dian = { time: [], data: [[], [], [], [], []] }
 
   constructor() {
     super()
@@ -46,17 +49,19 @@ class EIT extends EventTarget {
   private onWorkerMessage(e: MessageEvent<WorkerData>) {
     const { uell, dong, tv, roi, dian } = e.data
     const detail = { uell, dong, tv, roi } as EitData
-    this.dian[0].push(dian[0])
-    this.dian[1].push(dian[1])
-    this.dian[2].push(dian[2])
-    this.dian[3].push(dian[3])
-    this.dian[4].push(dian[4])
-    if (this.dian[0].length > 500) {
-      this.dian[0].shift()
-      this.dian[1].shift()
-      this.dian[2].shift()
-      this.dian[3].shift()
-      this.dian[4].shift()
+    this.dian.time.push(Math.trunc(Date.now()) / 1000)
+    this.dian.data[0].push(dian[0])
+    this.dian.data[1].push(dian[1])
+    this.dian.data[2].push(dian[2])
+    this.dian.data[3].push(dian[3])
+    this.dian.data[4].push(dian[4])
+    if (this.dian.time.length > 500) {
+      this.dian.time.shift()
+      this.dian.data[0].shift()
+      this.dian.data[1].shift()
+      this.dian.data[2].shift()
+      this.dian.data[3].shift()
+      this.dian.data[4].shift()
     }
     detail.dian = this.dian
     this.dispatchEvent(new CustomEvent('data', { detail }))

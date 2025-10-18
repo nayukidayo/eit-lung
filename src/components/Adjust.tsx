@@ -3,6 +3,7 @@ import uPlot, { AlignedData } from 'uplot'
 import Chart, { Opts } from './Chart'
 import cs from './Adjust.module.css'
 import useEitContext from '../hooks/useEitContext'
+import { toFixed } from '../lib/utils'
 
 const opts: Opts = {
   scales: {
@@ -24,7 +25,8 @@ const opts: Opts = {
     {
       splits: (_, _idx, min: number, max: number) => {
         const incr = (max - min) / 4
-        return [min, min + incr, min + incr * 2, min + incr * 3, max]
+        const arr = [min, min + incr, min + incr * 2, min + incr * 3, max]
+        return arr.map(v => toFixed(v))
       },
     },
   ],
