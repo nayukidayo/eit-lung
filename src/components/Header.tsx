@@ -1,44 +1,96 @@
+import { useRef } from 'react'
 import { IonButton } from '@ionic/react'
-import { usb } from '../lib/usb'
 import useStoreContext from '../hooks/useStoreContext'
-import useWorkerContext from '../hooks/useWorkerContext'
 import cs from './Header.module.css'
+import { usb } from '../lib/usb'
+import eit from '../lib/a'
 
 export default function Header() {
-  const { store, setStore } = useStoreContext()
-  const { uell, postMessage } = useWorkerContext()
+  const cirsRef = useRef<HTMLInputElement>(null)
+  const urefRef = useRef<HTMLInputElement>(null)
+  const dataRef = useRef<HTMLInputElement>(null)
 
-  const handleStart = () => {
+  const { store, setStore } = useStoreContext()
+
+  const startClick = () => {
     setStore({ start: true })
     const [mode1, mode2] = store.mode.split(',').map(Number)
-    usb.start({ mode1, mode2, freq: Number(store.freq) })
-    postMessage({ opcode: 'init', roi: store.roi, filter: store.filter })
+    usb.start({ mode1, mode2, freq: Number(store.freq) }).catch(err => {
+      setStore({ start: false })
+      console.log(err)
+    })
   }
 
-  const handleStop = () => {
+  const stopClick = () => {
     setStore({ start: false })
     usb.stop()
   }
 
-  const handleUref = () => {
-    postMessage({ opcode: 'uref', uref: uell })
+  const cirsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    file.arrayBuffer().then(cirs => eit.setConfig({ cirs }))
+  }
+
+  const urefChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    file.arrayBuffer().then(uref => eit.setConfig({ uref }))
+  }
+
+  const saveClick = () => {
+    eit.saveData(store.hz_name)
+  }
+
+  const loadChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    file.arrayBuffer().then(eit.loadData)
   }
 
   return (
     <header className={cs.a}>
       <img src="/logo.png" alt="logo" />
       {store.start ? (
-        <IonButton onClick={handleStop} color="danger">
+        <IonButton onClick={stopClick} color="danger">
           停止检测
         </IonButton>
       ) : (
-        <IonButton onClick={handleStart}>开始检测</IonButton>
+        <IonButton onClick={startClick}>开始检测</IonButton>
       )}
-      <IonButton onClick={handleUref} disabled={!store.start}>
-        空场标定
+      <IonButton onClick={() => cirsRef.current?.click()} disabled={store.start}>
+        导入灵敏度
       </IonButton>
-      <IonButton disabled>数据保存</IonButton>
-      <IonButton disabled>数据回放</IonButton>
+      <input
+        ref={cirsRef}
+        type="file"
+        accept=".txt"
+        onChange={cirsChange}
+        style={{ display: 'none' }}
+      />
+      <IonButton onClick={() => urefRef.current?.click()} disabled={store.start}>
+        导入空场
+      </IonButton>
+      <input
+        ref={urefRef}
+        type="file"
+        accept=".txt"
+        onChange={urefChange}
+        style={{ display: 'none' }}
+      />
+      <IonButton onClick={saveClick} disabled={store.start}>
+        数据保存
+      </IonButton>
+      <IonButton onClick={() => dataRef.current?.click()} disabled={store.start}>
+        数据回放
+      </IonButton>
+      <input
+        ref={dataRef}
+        type="file"
+        accept=".txt"
+        onChange={loadChange}
+        style={{ display: 'none' }}
+      />
     </header>
   )
 }

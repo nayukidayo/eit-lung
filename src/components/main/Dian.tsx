@@ -2,8 +2,8 @@ import { useMemo, useRef } from 'react'
 import type { AlignedData } from 'uplot'
 import Chart, { Opts } from '../Chart'
 import ROI from './Roi'
-import useWorkerContext from '../../hooks/useWorkerContext'
 import cs from './Dian.module.css'
+import useEitContext from '../../hooks/useEitContext'
 
 const opts: Opts = {
   scales: {
@@ -30,41 +30,41 @@ export function Dian() {
     xAxis.current = Array.from({ length: 500 }, (_, i) => i)
   }
 
-  const { dian } = useWorkerContext()
+  const msg = useEitContext()
 
-  const data = useMemo<Record<string, AlignedData>>(() => {
-    if (!dian) return { d0: [], d1: [], d2: [], d3: [], d4: [] }
-    const arr = xAxis.current!.slice(0, dian.d0.length)
-    return {
-      d0: [arr, dian.d0],
-      d1: [arr, dian.d1],
-      d2: [arr, dian.d2],
-      d3: [arr, dian.d3],
-      d4: [arr, dian.d4],
-    }
-  }, [dian])
+  const data = useMemo<AlignedData[]>(() => {
+    if (!msg) return Array<AlignedData>(5).fill([])
+    const arr = xAxis.current!.slice(0, msg.dian[0].length)
+    return [
+      [arr, msg.dian[0]],
+      [arr, msg.dian[1]],
+      [arr, msg.dian[2]],
+      [arr, msg.dian[3]],
+      [arr, msg.dian[4]],
+    ]
+  }, [msg])
 
   return (
     <div className={cs.c}>
       <div className={cs.b}>
         <div>Total</div>
-        <Chart opts={opts} data={data.d0} />
+        <Chart opts={opts} data={data[0]} />
       </div>
       <div className={cs.b}>
         <div>ROI1</div>
-        <Chart opts={opts} data={data.d1} />
+        <Chart opts={opts} data={data[1]} />
       </div>
       <div className={cs.b}>
         <div>ROI2</div>
-        <Chart opts={opts} data={data.d2} />
+        <Chart opts={opts} data={data[2]} />
       </div>
       <div className={cs.b}>
         <div>ROI3</div>
-        <Chart opts={opts} data={data.d3} />
+        <Chart opts={opts} data={data[3]} />
       </div>
       <div className={cs.b}>
         <div>ROI4</div>
-        <Chart opts={opts} data={data.d4} />
+        <Chart opts={opts} data={data[4]} />
       </div>
     </div>
   )

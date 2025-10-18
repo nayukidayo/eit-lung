@@ -1,5 +1,5 @@
 import { useStore, StoreContext } from '../hooks/useStoreContext'
-import { useWorker, WorkerContext } from '../hooks/useWorkerContext'
+import { useEit, EitContext } from '../hooks/useEitContext'
 
 type ProviderProps = {
   children: React.ReactNode
@@ -7,11 +7,11 @@ type ProviderProps = {
 
 export default function Provider({ children }: ProviderProps) {
   const storeContextValue = useStore()
-  const workerContextValue = useWorker()
+  const eitContextValue = useEit()
 
   return (
     <StoreContext value={storeContextValue}>
-      <WorkerContext value={workerContextValue}>{children}</WorkerContext>
+      <EitContext value={eitContextValue}>{children}</EitContext>
     </StoreContext>
   )
 }

@@ -1,38 +1,25 @@
 import { NavLink, To } from 'react-router'
 import { IonButton } from '@ionic/react'
-import useStoreContext from '../hooks/useStoreContext'
 import cs from './Navbar.module.css'
 
 export default function Navbar() {
-  const { store } = useStoreContext()
-
   return (
     <nav className={cs.a}>
-      <NavButton to="/main" disabled={store.start}>
-        主菜单
-      </NavButton>
+      <NavButton to="/main">主菜单</NavButton>
       <NavButton to="/func" disabled>
         功能性图像
       </NavButton>
-      <NavButton to="/level" disabled>
-        指标
-      </NavButton>
-      <NavButton to="/adjust" disabled={store.start}>
-        校准
-      </NavButton>
-      <NavButton to="/patient" disabled={store.start}>
-        患者
-      </NavButton>
-      <NavButton to="/setting" disabled={store.start}>
-        系统设置
-      </NavButton>
+      <NavButton to="/level">指标</NavButton>
+      <NavButton to="/adjust">校准</NavButton>
+      <NavButton to="/patient">患者</NavButton>
+      <NavButton to="/setting">系统设置</NavButton>
     </nav>
   )
 }
 
 type NavButtonProps = {
   children: React.ReactNode
-  disabled: boolean
+  disabled?: boolean
   to: To
 }
 

@@ -4,7 +4,7 @@ import { IonSegment, IonSegmentButton, IonLabel } from '@ionic/react'
 import type { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core'
 import cs from './Layout.module.css'
 
-export default function View() {
+export default function Layout() {
   const [seg, setSeg] = useState(location.pathname)
   const navigate = useNavigate()
 

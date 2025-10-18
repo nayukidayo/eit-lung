@@ -39,8 +39,9 @@
 
 .l {
   position: absolute;
-  line-height: 1rem;
-  top: -0.5rem;
+  line-height: 0.8rem;
+  font-size: 0.8rem;
+  top: -0.4rem;
   left: 1rem;
   padding: 0 0.5rem;
   background-color: #fff;

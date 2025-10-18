@@ -1,22 +1,19 @@
 import { IonItem, IonList, IonSelect, IonSelectOption } from '@ionic/react'
 import type { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core'
 import useStoreContext from '../hooks/useStoreContext'
-import useWorkerContext from '../hooks/useWorkerContext'
-
-type Isce = IonSelectCustomEvent<SelectChangeEventDetail<string>>
+import eit, { Filter, Roi } from '../lib/a'
 
 export default function Setting() {
   const { store, setStore } = useStoreContext()
-  const { postMessage } = useWorkerContext()
 
-  const filterChange = (e: Isce) => {
+  const filterChange = (e: IonSelectCustomEvent<SelectChangeEventDetail<Filter>>) => {
     setStore({ filter: e.detail.value })
-    postMessage({ opcode: 'init', filter: e.detail.value, roi: store.roi })
+    eit.setConfig({ filter: e.detail.value })
   }
 
-  const roiChange = (e: Isce) => {
+  const roiChange = (e: IonSelectCustomEvent<SelectChangeEventDetail<Roi>>) => {
     setStore({ roi: e.detail.value })
-    postMessage({ opcode: 'init', roi: e.detail.value, filter: store.filter })
+    eit.setConfig({ roi: e.detail.value })
   }
 
   return (
@@ -101,7 +98,7 @@ export default function Setting() {
         </IonItem>
         <IonItem>
           <IonSelect label="滤波设置" value={store.filter} onIonChange={filterChange}>
-            <IonSelectOption value="no">无滤波器</IonSelectOption>
+            <IonSelectOption value="none">无滤波器</IonSelectOption>
             <IonSelectOption value="smooth">平滑滤波</IonSelectOption>
             <IonSelectOption value="lowpass">低通滤波</IonSelectOption>
           </IonSelect>

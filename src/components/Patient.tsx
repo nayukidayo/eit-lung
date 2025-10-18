@@ -8,9 +8,21 @@ export default function Patient() {
 
   const { store, setStore } = useStoreContext()
 
-  const onDidDismiss = (e: CustomEvent<OverlayEventDetail>) => {
+  const onNameDismiss = (e: CustomEvent<OverlayEventDetail>) => {
     if (e.detail.role === 'ok') {
-      setStore(e.detail.data.values)
+      let { hz_name } = e.detail.data.values
+      hz_name = hz_name.trim().replace(/[\\/:*?"<>|]/g, '_')
+      if (!hz_name) return
+      setStore({ hz_name })
+    } else {
+      setStore({})
+    }
+  }
+
+  const onAgeDismiss = (e: CustomEvent<OverlayEventDetail>) => {
+    if (e.detail.role === 'ok') {
+      const { hz_age } = e.detail.data.values
+      setStore({ hz_age: Number(hz_age).toFixed() })
     } else {
       setStore({})
     }
@@ -33,7 +45,7 @@ export default function Patient() {
         </IonItem>
         <IonAlert
           trigger="hz_name"
-          onDidDismiss={onDidDismiss}
+          onDidDismiss={onNameDismiss}
           header="患者姓名"
           buttons={[
             {
@@ -65,7 +77,7 @@ export default function Patient() {
         </IonSelect>
         <IonAlert
           trigger="hz_age"
-          onDidDismiss={onDidDismiss}
+          onDidDismiss={onAgeDismiss}
           header="患者年龄"
           buttons={[
             {

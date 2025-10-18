@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from 'react'
 
 const defaultStore = {
   start: false,
+  play: false,
   // 系统设置
   freq: '4',
   mode: '26,30',
