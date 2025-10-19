@@ -2,8 +2,7 @@ import { useRef } from 'react'
 import { IonButton } from '@ionic/react'
 import useStoreContext from '../hooks/useStoreContext'
 import cs from './Header.module.css'
-import { usb } from '../lib/usb'
-import eit from '../lib/a'
+import eit from '../lib/eit'
 
 export default function Header() {
   const cirsRef = useRef<HTMLInputElement>(null)
@@ -15,7 +14,7 @@ export default function Header() {
   const startClick = () => {
     setStore({ start: true })
     const [mode1, mode2] = store.mode.split(',').map(Number)
-    usb.start({ mode1, mode2, freq: Number(store.freq) }).catch(err => {
+    eit.start(mode1, mode2, Number(store.freq)).catch(err => {
       setStore({ start: false })
       console.log(err)
     })
@@ -23,7 +22,7 @@ export default function Header() {
 
   const stopClick = () => {
     setStore({ start: false })
-    usb.stop()
+    eit.stop()
   }
 
   const cirsChange = (e: React.ChangeEvent<HTMLInputElement>) => {

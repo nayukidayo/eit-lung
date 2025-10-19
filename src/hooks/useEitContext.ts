@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
-import eit, { EitData } from '../lib/a'
+import eit from '../lib/eit'
 import { usb } from '../lib/usb'
 import type { PluginListenerHandle } from '@capacitor/core'
+import type { EitData } from '../lib/types'
 
 type EitContextValue = EitData | null
 
@@ -27,8 +28,3 @@ export function useEit() {
 
   return data
 }
-
-// const [dong, setDong] = useState<U8CA>()
-// const [tv, setTv] = useState<U8CA>()
-// const [roi, setRoi] = useState({ hu: 0, r0: 0, r1: 0, r2: 0, r3: 0, r4: 0 })
-// const [dian, setDian] = useState({ d0: [], d1: [], d2: [], d3: [], d4: [] })

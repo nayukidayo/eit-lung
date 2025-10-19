@@ -44,15 +44,8 @@ export function TV() {
   const { store } = useStoreContext()
   const msg = useEitContext()
 
-  if (msg && msg.tv && ctx.current) {
-    const oc = new OffscreenCanvas(64, 64)
-    oc.getContext('2d')!.putImageData(new ImageData(msg.tv, 64, 64), 0, 0)
-    ctx.current.drawImage(oc, 0, 0)
-    drawRoi(ctx.current, store.roi)
-  }
-
   useEffect(() => {
-    if (ref.current === null) return
+    if (!ref.current) return
     ctx.current = ref.current.getContext('2d')!
     ctx.current.scale(scale, scale)
     drawLine(ctx.current)
@@ -61,6 +54,15 @@ export function TV() {
       ctx.current?.reset()
     }
   }, [])
+
+  useEffect(() => {
+    if (msg && msg.tv && ctx.current) {
+      const oc = new OffscreenCanvas(64, 64)
+      oc.getContext('2d')!.putImageData(new ImageData(msg.tv, 64, 64), 0, 0)
+      ctx.current.drawImage(oc, 0, 0)
+      drawRoi(ctx.current, store.roi)
+    }
+  }, [msg?.tv, store.roi])
 
   return <canvas className={cs.c} ref={ref} width={70 * scale} height={64 * scale}></canvas>
 }

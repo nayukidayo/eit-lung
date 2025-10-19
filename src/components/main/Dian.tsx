@@ -53,8 +53,8 @@ const RoiOpts: Opts = {
     {},
     {
       label: 'Roi1',
-      stroke: 'rgba(244, 244, 56, 1)',
-      // fill: 'rgba(244, 244, 56, 0.2)',
+      stroke: 'rgba(56, 244, 235, 1)',
+      // fill: 'rgba(56, 244, 235, 0.2)',
       points: { show: false },
     },
     {

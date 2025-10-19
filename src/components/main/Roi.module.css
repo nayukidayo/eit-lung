@@ -8,6 +8,7 @@
     display: grid;
     gap: 5px;
     justify-items: center;
+    font-size: 0.85rem;
 
     > div:last-of-type {
       justify-self: stretch;
