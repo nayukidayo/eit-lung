@@ -6,6 +6,10 @@
 
   > img {
     max-height: 60%;
-    margin-right: auto;
+    margin-right: 5rem;
   }
+}
+
+.b {
+  margin-right: auto;
 }

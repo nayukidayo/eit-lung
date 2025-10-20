@@ -1,7 +1,8 @@
 import { IonItem, IonList, IonSelect, IonSelectOption } from '@ionic/react'
 import type { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core'
 import useStoreContext from '../hooks/useStoreContext'
-import eit, { Filter, Roi } from '../lib/eit'
+import eit from '../lib/eit'
+import type { Filter, Roi } from '../lib/types'
 
 export default function Setting() {
   const { store, setStore } = useStoreContext()
@@ -100,7 +101,9 @@ export default function Setting() {
           <IonSelect label="滤波设置" value={store.filter} onIonChange={filterChange}>
             <IonSelectOption value="none">无滤波器</IonSelectOption>
             <IonSelectOption value="smooth">平滑滤波</IonSelectOption>
-            <IonSelectOption value="lowpass" disabled>低通滤波</IonSelectOption>
+            <IonSelectOption value="lowpass" disabled>
+              低通滤波
+            </IonSelectOption>
           </IonSelect>
         </IonItem>
         <IonItem>

@@ -5,6 +5,7 @@ import ROI from './Roi'
 import cs from './Dian.module.css'
 import useEitContext from '../../hooks/useEitContext'
 import { toFixed } from '../../lib/utils'
+import eit from '../../lib/eit'
 
 const TotalOpts: Opts = {
   legend: { show: true, live: false },
@@ -89,6 +90,34 @@ export function Dian() {
     if (!tr) return
     tbody.insertBefore(tr, tbody.firstChild)
     legend.style.display = 'none'
+  }, [])
+
+  useEffect(() => {
+    const onSaveData = (e: CustomEvent) => {
+      if (!ref.current) return
+      const [a, b] = ref.current.querySelectorAll('canvas')
+      if (!a || !b) return
+      const oc = new OffscreenCanvas(a.width, a.height + b.height)
+      const ctx = oc.getContext('2d')!
+      ctx.drawImage(a, 0, 0)
+      ctx.drawImage(b, 0, a.height)
+      ctx.globalCompositeOperation = 'destination-over'
+      ctx.fillStyle = 'rgba(255, 255, 255, 1)'
+      ctx.fillRect(0, 0, oc.width, oc.height)
+      oc.convertToBlob().then(blob => {
+        const reader = new FileReader()
+        reader.readAsDataURL(blob)
+        reader.onloadend = () => {
+          const url = reader.result as string
+          const data = url.substring(url.indexOf(',') + 1)
+          e.detail({ name: 'dian.png', data })
+        }
+      })
+    }
+    eit.addEventListener('saveData', onSaveData as EventListener)
+    return () => {
+      eit.removeEventListener('saveData', onSaveData as EventListener)
+    }
   }, [])
 
   const msg = useEitContext()

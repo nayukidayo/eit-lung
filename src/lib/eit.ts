@@ -3,7 +3,6 @@ import { formatNow, toFixed } from './utils'
 import { usb } from './usb'
 import type { WorkerData, Config, EitData, U8CA, Dian } from './types'
 
-
 class EIT extends EventTarget {
   private worker: Worker
   private uells: number[][] = []
@@ -52,6 +51,12 @@ class EIT extends EventTarget {
     this.setConfig({ cirs, uref, roi: 'xx', filter: 'smooth' })
   }
 
+  private initCache() {
+    this.uells = []
+    this.tv = undefined
+    this.dian = { time: [], data: [[], [], [], [], []] }
+  }
+
   setConfig(config: Config) {
     const transfer: Transferable[] = []
     const { cirs, uref } = config
@@ -67,9 +72,7 @@ class EIT extends EventTarget {
   }
 
   start(mode1: number, mode2: number, freq: number) {
-    this.uells = []
-    this.tv = undefined
-    this.dian = { time: [], data: [[], [], [], [], []] }
+    this.initCache()
     return usb.start({ mode1, mode2, freq })
   }
 
@@ -78,6 +81,7 @@ class EIT extends EventTarget {
   }
 
   loadData(ab: ArrayBuffer) {
+    this.initCache()
     return new Promise<void>(res => {
       let start = 0
       const str = new TextDecoder().decode(ab)
@@ -97,13 +101,36 @@ class EIT extends EventTarget {
   }
 
   async saveData(name: string) {
-    const path = `EIT_LUNG/${name}/${formatNow()}`
+    const dir = `EIT_LUNG/${name}/${formatNow()}`
     await Filesystem.mkdir({
-      path,
+      path: dir,
       directory: Directory.Documents,
       recursive: true,
     })
-    this.dispatchEvent(new CustomEvent('saveData', { detail: path }))
+    let str = ''
+    for (let i = 0; i < this.uells.length; i++) {
+      str += this.uells[i].join(' ')
+      str += '\n'
+    }
+    await Filesystem.writeFile({
+      path: `${dir}/uells.txt`,
+      data: str,
+      directory: Directory.Documents,
+      encoding: Encoding.UTF8,
+    })
+    return new Promise<void>(res => {
+      let count = 3
+      const cb = async ({ name, data }: { name: string; data: string }) => {
+        await Filesystem.writeFile({
+          path: `${dir}/${name}`,
+          data,
+          directory: Directory.Documents,
+        })
+        count--
+        if (count === 0) res()
+      }
+      this.dispatchEvent(new CustomEvent('saveData', { detail: cb }))
+    })
   }
 }
 

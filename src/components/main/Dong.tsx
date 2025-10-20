@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import cs from './Dong.module.css'
 import useEitContext from '../../hooks/useEitContext'
+import eit from '../../lib/eit'
 
 const scale = 5
 
@@ -37,6 +38,19 @@ export function Dong() {
     oc.getContext('2d')!.putImageData(new ImageData(msg.dong, 64, 64), 0, 0)
     ctx.current.drawImage(oc, 0, 0)
   }, [msg])
+
+  useEffect(() => {
+    const onSaveData = (e: CustomEvent) => {
+      if (!ref.current) return
+      const url = ref.current.toDataURL()
+      const data = url.substring(url.indexOf(',') + 1)
+      e.detail({ name: 'dong.png', data })
+    }
+    eit.addEventListener('saveData', onSaveData as EventListener)
+    return () => {
+      eit.removeEventListener('saveData', onSaveData as EventListener)
+    }
+  }, [])
 
   return <canvas className={cs.c} ref={ref} width={70 * scale} height={64 * scale}></canvas>
 }

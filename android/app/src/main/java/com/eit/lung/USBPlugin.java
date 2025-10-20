@@ -1,7 +1,5 @@
 package com.eit.lung;
 
-import android.util.Log;
-
 import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -12,7 +10,6 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 @CapacitorPlugin(name = "usb")
 public class USBPlugin extends Plugin {
     private USB usb;
-    private static final String TAG = "QQQ";
 
     @Override
     public void load() {
@@ -52,7 +49,6 @@ public class USBPlugin extends Plugin {
 
             @Override
             public void err(String msg) {
-                Log.d("QQQ", msg);
                 call.reject(msg);
             }
         };

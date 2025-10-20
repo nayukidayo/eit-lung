@@ -3,6 +3,7 @@ import ROI from './Roi'
 import cs from './TV.module.css'
 import useStoreContext from '../../hooks/useStoreContext'
 import useEitContext from '../../hooks/useEitContext'
+import eit from '../../lib/eit'
 
 const scale = 5
 
@@ -63,6 +64,19 @@ export function TV() {
       drawRoi(ctx.current, store.roi)
     }
   }, [msg?.tv, store.roi])
+
+  useEffect(() => {
+    const onSaveData = (e: CustomEvent) => {
+      if (!ref.current) return
+      const url = ref.current.toDataURL()
+      const data = url.substring(url.indexOf(',') + 1)
+      e.detail({ name: 'tv.png', data })
+    }
+    eit.addEventListener('saveData', onSaveData as EventListener)
+    return () => {
+      eit.removeEventListener('saveData', onSaveData as EventListener)
+    }
+  }, [])
 
   return <canvas className={cs.c} ref={ref} width={70 * scale} height={64 * scale}></canvas>
 }
