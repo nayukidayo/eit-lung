@@ -17,10 +17,13 @@ export function useEit() {
   const [data, setData] = useState<EitContextValue>(null)
 
   useEffect(() => {
+    const onReset = () => setData(null)
     const onData = (e: CustomEvent<EitData>) => setData(e.detail)
+    eit.addEventListener('reset', onReset as EventListener)
     eit.addEventListener('data', onData as EventListener)
     usb.addListener('data', e => eit.onUsbData(e.data)).then(h => (ref.current = h))
     return () => {
+      eit.addEventListener('reset', onReset as EventListener)
       eit.removeEventListener('data', onData as EventListener)
       ref.current?.remove()
     }

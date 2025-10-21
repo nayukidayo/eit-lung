@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from 'react'
+import { Filter, Roi } from '../lib/types'
 
 const defaultStore = {
   start: false,
@@ -10,8 +11,8 @@ const defaultStore = {
   hz: '4',
   sj: '2',
   kd: '3',
-  filter: 'smooth',
-  roi: 'xx',
+  filter: 'smooth' as Filter,
+  roi: 'xx' as Roi,
   // 患者设置
   hz_name: '张三',
   hz_sex: '1',

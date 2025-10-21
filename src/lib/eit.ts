@@ -38,9 +38,9 @@ class EIT extends EventTarget {
     }
     detail.dian = this.dian
     detail.roi = roi.map(v => toFixed(v, 2))
-    detail.tv = tv ? tv : this.tv
-    this.dispatchEvent(new CustomEvent('data', { detail }))
     if (tv) this.tv = tv
+    detail.tv = this.tv
+    this.dispatchEvent(new CustomEvent('data', { detail }))
   }
 
   private async initConfig() {
@@ -55,6 +55,7 @@ class EIT extends EventTarget {
     this.uells = []
     this.tv = undefined
     this.dian = { time: [], data: [[], [], [], [], []] }
+    this.dispatchEvent(new CustomEvent('reset'))
   }
 
   setConfig(config: Config) {

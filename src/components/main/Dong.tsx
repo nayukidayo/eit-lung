@@ -7,13 +7,10 @@ const scale = 5
 
 const drawLine = (ctx: CanvasRenderingContext2D) => {
   const line = ctx.createLinearGradient(0, 0, 0, 64)
-  line.addColorStop(0, '#00ABEB')
-  line.addColorStop(0.5, '#26C000')
-  line.addColorStop(1, '#DFEB00')
+  line.addColorStop(0, 'rgba(255, 0, 0, 1)')
+  line.addColorStop(1, 'rgba(0, 128, 255, 1)')
   ctx.fillStyle = line
   ctx.fillRect(68, 0, 2, 64)
-  // ctx.fillStyle = '#00ABEB'
-  // ctx.fillRect(0, 0, 64, 64)
 }
 
 export function Dong() {
@@ -33,10 +30,13 @@ export function Dong() {
   }, [])
 
   useEffect(() => {
-    if (!msg || !ctx.current) return
-    const oc = new OffscreenCanvas(64, 64)
-    oc.getContext('2d')!.putImageData(new ImageData(msg.dong, 64, 64), 0, 0)
-    ctx.current.drawImage(oc, 0, 0)
+    if (msg) {
+      const oc = new OffscreenCanvas(64, 64)
+      oc.getContext('2d')!.putImageData(new ImageData(msg.dong, 64, 64), 0, 0)
+      ctx.current?.drawImage(oc, 0, 0)
+    } else {
+      ctx.current?.clearRect(0, 0, 64, 64)
+    }
   }, [msg])
 
   useEffect(() => {

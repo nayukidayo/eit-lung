@@ -4,22 +4,20 @@ import cs from './TV.module.css'
 import useStoreContext from '../../hooks/useStoreContext'
 import useEitContext from '../../hooks/useEitContext'
 import eit from '../../lib/eit'
+import { Roi } from '../../lib/types'
 
 const scale = 5
 
 const drawLine = (ctx: CanvasRenderingContext2D) => {
   const line = ctx.createLinearGradient(0, 0, 0, 64)
-  line.addColorStop(0, '#00ABEB')
-  line.addColorStop(0.5, '#26C000')
-  line.addColorStop(1, '#DFEB00')
+  line.addColorStop(0, 'rgba(255, 0, 0, 1)')
+  line.addColorStop(1, 'rgba(0, 128, 255, 1)')
   ctx.fillStyle = line
   ctx.fillRect(68, 0, 2, 64)
-  // ctx.fillStyle = '#00ABEB'
-  // ctx.fillRect(0, 0, 64, 64)
 }
 
-const drawRoi = (ctx: CanvasRenderingContext2D, roi: string) => {
-  ctx.strokeStyle = '#ff0000'
+const drawRoi = (ctx: CanvasRenderingContext2D, roi: Roi) => {
+  ctx.strokeStyle = 'rgba(66, 244, 81, 1)'
   ctx.lineWidth = 1 / scale
   ctx.beginPath()
   if (roi === 'dc') {
@@ -50,19 +48,23 @@ export function TV() {
     ctx.current = ref.current.getContext('2d')!
     ctx.current.scale(scale, scale)
     drawLine(ctx.current)
-    drawRoi(ctx.current, store.roi)
     return () => {
       ctx.current?.reset()
     }
   }, [])
 
   useEffect(() => {
-    if (msg && msg.tv && ctx.current) {
-      const oc = new OffscreenCanvas(64, 64)
-      oc.getContext('2d')!.putImageData(new ImageData(msg.tv, 64, 64), 0, 0)
-      ctx.current.drawImage(oc, 0, 0)
-      drawRoi(ctx.current, store.roi)
-    }
+    if (msg || !ctx.current) return
+    ctx.current.clearRect(0, 0, 64, 64)
+    drawRoi(ctx.current, store.roi)
+  }, [msg, store.roi])
+
+  useEffect(() => {
+    if (!msg?.tv || !ctx.current) return
+    const oc = new OffscreenCanvas(64, 64)
+    oc.getContext('2d')!.putImageData(new ImageData(msg.tv, 64, 64), 0, 0)
+    ctx.current.drawImage(oc, 0, 0)
+    drawRoi(ctx.current, store.roi)
   }, [msg?.tv, store.roi])
 
   useEffect(() => {
