@@ -52,7 +52,7 @@ class EIT {
   private filtering(uell: number[]) {
     switch (this.filter) {
       case 'smooth':
-        return this.smooth(uell)
+        return this.smooth(this.smooth(this.smooth(uell)))
       case 'lowpass':
         return this.lowpass(uell)
       default:
@@ -108,9 +108,14 @@ class EIT {
   }
 
   private draw(x: number[]) {
+    const min = Math.min(...x)
+    const max = Math.max(...x)
     const a = new Uint8ClampedArray(64 * 64 * 4).fill(255)
     for (let i = 0; i < x.length; i++) {
-      a[graph[i] * 4] = 100
+      const b = ((x[i] - min) / (max - min)) * 255
+      a[graph[i] * 4] = b
+      a[graph[i] * 4 + 1] = (255 - b) / 2
+      a[graph[i] * 4 + 2] = 255 - b
     }
     return a
   }
