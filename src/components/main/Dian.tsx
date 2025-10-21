@@ -16,6 +16,7 @@ const TotalOpts: Opts = {
       values: (_u, splits) => splits.map(() => null),
     },
     {
+      size: 90,
       splits: (_u, _idx, min, max) => {
         const incr = (max - min) / 4
         const arr = [min, min + incr, min + incr * 2, min + incr * 3, max]
@@ -43,6 +44,7 @@ const RoiOpts: Opts = {
       // values: '{ss}.{fff}',
     },
     {
+      size: 90,
       splits: (_u, _idx, min, max) => {
         const incr = (max - min) / 4
         const arr = [min, min + incr, min + incr * 2, min + incr * 3, max]
@@ -54,8 +56,8 @@ const RoiOpts: Opts = {
     {},
     {
       label: 'Roi1',
-      stroke: 'rgba(56, 244, 235, 1)',
-      // fill: 'rgba(56, 244, 235, 0.2)',
+      stroke: 'rgba(56, 232, 244, 1)',
+      // fill: 'rgba(56, 232, 244, 0.2)',
       points: { show: false },
     },
     {

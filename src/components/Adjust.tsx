@@ -23,6 +23,7 @@ const opts: Opts = {
   axes: [
     { show: false },
     {
+      size: 60,
       splits: (_, _idx, min: number, max: number) => {
         const incr = (max - min) / 4
         const arr = [min, min + incr, min + incr * 2, min + incr * 3, max]
