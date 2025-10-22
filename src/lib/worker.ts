@@ -134,8 +134,33 @@ class EIT {
     return a
   }
 
-  private lowpass(uell: number[]) {
-    return uell
+  private lowpass(uell: number[], fpass = 1, fs = 20, N = 101) {
+    const fc = fpass / (fs / 2)
+    const half = Math.floor((N - 1) / 2)
+    const h = Array(N)
+    for (let i = 0; i < N; i++) {
+      const n = i - half
+      if (n === 0) {
+        h[i] = fc
+      } else {
+        h[i] = Math.sin(Math.PI * fc * n) / (Math.PI * n)
+      }
+      h[i] *= 0.54 - 0.46 * Math.cos((2 * Math.PI * i) / (N - 1))
+    }
+    const L = uell.length
+    const y = Array(L).fill(0)
+    const x_padded = Array(L + 2 * half).fill(0)
+    for (let i = 0; i < L; i++) {
+      x_padded[i + half] = uell[i]
+    }
+    for (let i = 0; i < L; i++) {
+      let sum = 0
+      for (let j = 0; j < N; j++) {
+        sum += x_padded[i + j] * h[j]
+      }
+      y[i] = sum
+    }
+    return y
   }
 
   private greit(uell: number[], uref: number[], cirs: number[]) {

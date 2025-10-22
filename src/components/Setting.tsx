@@ -101,9 +101,7 @@ export default function Setting() {
           <IonSelect label="滤波设置" value={store.filter} onIonChange={filterChange}>
             <IonSelectOption value="none">无滤波器</IonSelectOption>
             <IonSelectOption value="smooth">平滑滤波</IonSelectOption>
-            <IonSelectOption value="lowpass" disabled>
-              低通滤波
-            </IonSelectOption>
+            <IonSelectOption value="lowpass">低通滤波</IonSelectOption>
           </IonSelect>
         </IonItem>
         <IonItem>
