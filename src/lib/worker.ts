@@ -1,4 +1,4 @@
-import { roidc, roixx, graph } from './constant'
+import { roidc, roixx, graph } from './const'
 import type { Config, F64A, Filter, Roi, WorkerData } from './types'
 
 class EIT {
